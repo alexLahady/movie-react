@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.scss';
 import App from './App';
-import Home from './pages/Home'
-import Browser from './pages/Browser';
-import Library from './pages/Library';
-import Login from './pages/Login';
+import Browser from './pages/browser';
+import Library from './pages/library';
+import Login from './pages/login';
 
 //import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(
@@ -15,19 +14,15 @@ const root = ReactDOM.createRoot(
 
 
 root.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home />} /> {/* accueil et l'api */}
-      <Route path="/me/movies" element={<Library />} /> {/* accueil et l'api */}
-      <Route path="/user" element={<Login />} /> {/* accueil et l'api */}
-      <Route path="/browser" element={<Browser />} /> {/* accueil et l'api */}
-    </Routes>
-    </BrowserRouter>
-);
-
-root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/me/movies" element={<Library />} />
+        <Route path="/user" element={<Login />} />
+        <Route path="/browser" element={<Browser />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

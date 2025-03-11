@@ -1,8 +1,8 @@
 
-function Home(){
+function Signup(){
     return (
         <div></div>
     )
 }
 
-export default Home; 
+export default Signup; 
