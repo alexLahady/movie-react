@@ -48,7 +48,7 @@ function Login() {
 
             if (response.ok) {
                 const data: ServerResponse = await response.json();
-                setMessage(data.message);  // Affiche la réponse du serveur
+                setMessage(data.message);  // Affiche la réponse du serveur problème ne renvoi pas de message d'erreur ou réponse juste le cookie mais fonctionnel
             } else {
                 setMessage('Erreur lors de l\'envoi des données');
             }
@@ -73,10 +73,3 @@ function Login() {
 }
 
 export default Login;
-
-/*
-fetch('http://localhost:3001/user/login?email=email?password=password')
-
-
-*/
-// faire des if pour email et password
