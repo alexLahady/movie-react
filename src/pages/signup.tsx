@@ -1,7 +1,13 @@
+import Banner from "../components/banner";
 
-function Signup(){
+
+function Signup() {
     return (
-        <div></div>
+        <div>
+            <Banner />
+            je suis signup
+
+        </div>
     )
 }
 

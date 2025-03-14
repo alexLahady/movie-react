@@ -6,6 +6,7 @@ import App from './App';
 import Browser from './pages/browser';
 import Library from './pages/library';
 import Login from './pages/login';
+import Signup from './pages/signup';
 
 //import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(
@@ -21,6 +22,7 @@ root.render(
         <Route path="/me/movies" element={<Library />} />
         <Route path="/user" element={<Login />} />
         <Route path="/browser" element={<Browser />} />
+        <Route path='/signup' element={<Signup />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
