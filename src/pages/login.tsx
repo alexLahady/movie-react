@@ -1,17 +1,17 @@
 import Banner from '../components/banner';
 import { useState, useEffect } from 'react';
 import { Link } from "react-router";
+import { useNavigate } from 'react-router-dom';
 
 interface LoginData {
     email: string;
     password: string;
 }
 
-interface ServerResponse {
-    message: string; // Exemple de message, ajuste selon la réponse réelle de ton serveur
-}
-
 function Login() {
+    //variable pour changer de page React router v6
+    const navigate = useNavigate();
+
     //variable d'email
     const [email, setEmail] = useState<string>('');
     const [isEmail, setIsEmail] = useState<boolean>(false);
@@ -40,18 +40,22 @@ function Login() {
 
             const response = await fetch('http://localhost:3001/users/login', {
                 method: 'POST',
+                credentials: 'include',
+                //mode:'cors',
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(loginData),
             });
 
-            if (response.ok) {
-                const data: ServerResponse = await response.json();
-                setMessage(data.message);  // Affiche la réponse du serveur problème ne renvoi pas de message d'erreur ou réponse juste le cookie mais fonctionnel
+            if(response !== null){
+                navigate('/', {replace:true});
             } else {
-                setMessage('Erreur lors de l\'envoi des données');
+              // Si la réponse n'est pas OK, affichez un message d'erreur
+              setMessage('Erreur lors de l\'envoi des données');
             }
+            
         } else {
             setMessage("email or password not good");
         }
