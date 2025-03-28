@@ -25,7 +25,7 @@ function Login() {
 
     useEffect(() => {
         email.length >= 4 ? setIsEmail(true) : setIsEmail(false);
-        password.length >= 8 ? setIsPassword(true) : setIsPassword(false);
+        password.length >= 2 ? setIsPassword(true) : setIsPassword(false);
 
     }, [email, password]);
 
@@ -37,12 +37,12 @@ function Login() {
                 email: email,
                 password: password,
             };
-
+            console.log(loginData);
             const response = await fetch('http://localhost:3001/users/login', {
                 method: 'POST',
                 credentials: 'include',
                 //mode:'cors',
-                mode: 'no-cors',
+                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -66,7 +66,7 @@ function Login() {
         <div>
             <Banner />
             <p>email : <input type='email' value={email} onChange={e => setEmail(e.target.value)} /> {email.length >= 4 ? "it's good" : "it's false"}</p>
-            <p>password : <input type='password' value={password} onChange={e => setPassword(e.target.value)} /> {password.length >= 8 ? "it's good" : "it's false"}</p>
+            <p>password : <input type='password' value={password} onChange={e => setPassword(e.target.value)} /> {password.length >= 2 ? "it's good" : "it's false"}</p>
             <button onClick={handleSubmit}>send request</button>
             <p>{message}</p>
             <p>Create account click on <Link to="/signup">signup</Link></p>
