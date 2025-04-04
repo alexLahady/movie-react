@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import "../styles/banner.scss";
+import Cookie from "./cookie";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
@@ -12,29 +13,16 @@ function Banner() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/pro/pro', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include'
-    })
-      .then(response => response.json())
-      .then(arrayUser => {
-        setDataUser(arrayUser);
+    Cookie(true)
+      .then(response => {
+        setDataUser(response);
         setIsLoading(false);
       })
   }, []);
 
   const logout = async () => {
-    await fetch('http://localhost:3001/delete/logout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include'
-    });
-
+    let url = 'http://localhost:3001/delete/logout';
+    await Cookie(false, url, 'POST')
     window.location.reload();
   }
 

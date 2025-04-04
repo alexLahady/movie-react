@@ -2,6 +2,7 @@ import Banner from "../components/banner";
 import { useState, useEffect } from 'react';
 import { Link } from "react-router";
 import { useNavigate } from 'react-router-dom';
+import Cookie from "../components/cookie";
 
 interface SignupData {
     email: string;
@@ -41,17 +42,9 @@ function Signup() {
                 console.log("Tous les champs doivent être remplis.");
                 return; // Stoppe l'envoi si un champ est manquant
             };
-    
-            const response = await fetch('http://localhost:3001/users/signup', {
-                method: 'POST',
-                credentials: 'include',
-                //mode:'cors',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(signupData),
-            });
+            
+            let url =  'http://localhost:3001/users/signup'
+            const response = await Cookie(false,url,'POST',signupData)
     
             if(response !== null){
                 navigate('/user', {replace:true});

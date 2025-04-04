@@ -2,6 +2,7 @@ import Banner from '../components/banner';
 import { useState, useEffect } from 'react';
 import { Link } from "react-router";
 import { useNavigate } from 'react-router-dom';
+import Cookie from '../components/cookie';
 
 interface LoginData {
     email: string;
@@ -37,17 +38,9 @@ function Login() {
                 email: email,
                 password: password,
             };
-            console.log(loginData);
-            const response = await fetch('http://localhost:3001/users/login', {
-                method: 'POST',
-                credentials: 'include',
-                //mode:'cors',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginData),
-            });
+            //console.log(loginData);
+            let url = 'http://localhost:3001/users/login'
+            const response = await Cookie(false,url,'POST',loginData)
 
             if(response !== null){
                 navigate('/', {replace:true});
