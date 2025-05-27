@@ -116,7 +116,7 @@ function Browser() {
         }
 
         */
-        let trueUserId = Number(dataUser[0]); //pour rouver à TS que c'est un number
+        let trueUserId = Number(dataUser[0]); //pour prouver à TS que c'est un number
 
 
         return (
