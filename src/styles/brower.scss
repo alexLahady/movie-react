@@ -1,0 +1,14 @@
+.browser {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+
+    .fa-heart {
+        color: red;
+    }
+
+    span {
+        color: white;
+    }
+}

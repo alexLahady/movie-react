@@ -1,7 +1,17 @@
 import Banner from "../components/banner";
 import { useState, useEffect } from "react";
 import Cookie from "../components/cookie";
-import Box from "../components/box";
+import IconButton from '@mui/material/IconButton';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Typography from '@mui/material/Typography';
+import CardMedia from '@mui/material/CardMedia';
+import '../styles/brower.scss';
 
 
 interface Movie {
@@ -75,48 +85,44 @@ function Browser() {
 
     if (!isLoading) {
 
+        const favorite = (element : Movie) => {
+            let foundMovie = userMovies.some((user) => user.title === element.title);
+            if(foundMovie) {
+                return true
+            }
+            return false
+        }
+
         const handleSort = (criteria: 'title' | 'release_date' | 'vote_average') => {
             setSort(criteria);
             criteria === 'title' ? setOrder('asc') : setOrder('desc');
         };
-        /*
+
+        let trueUserId = Number(dataUser[0]); //pour prouver à TS que c'est un number
+
+        const handlefavorites = async (element: Movie) => {
+            let foundMovie = userMovies.some((user) => user.title === element.title);
+            if (!foundMovie) {
+                let newElement = { title: element.title, overview: element.overview, release_date: element.release_date, vote_average: element.vote_average };
+                let url = `http://localhost:3001/me/movies/${dataUser[0]}`;
+                await Cookie(false, url, 'POST', newElement);
+
+                window.location.reload();
+
+            } else {
+                let deleteElement = { userId: trueUserId, title: element.title }
+                let url = 'http://localhost:3001/delete/movie';
+                await Cookie(false, url, 'DELETE', deleteElement);
+
+                window.location.reload();
+            }
+        }
+
         const formatDate = (dateString: string) => {
             const date = new Date(dateString);
             return date.toLocaleDateString('en-US');
         }
 
-        const handleDelete = async (userId: number, element: Movie) => {
-            let deleteElement = { userId: userId, title: element.title }
-            let url = 'http://localhost:3001/delete/movie';
-            await Cookie(false, url, 'DELETE', deleteElement);
-
-            url = `http://localhost:3001/me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
-            await Cookie(false, url, 'GET',)
-                .then(allMovie => {
-                    setMovies(allMovie);
-                });
-        }
-
-        const handlePush = async (userId: number, element: Movie) => {
-            let newElement = { title: element.title, overview: element.overview, release_date: element.release_date, vote_average: element.vote_average };
-            let url = `http://localhost:3001/me/movies/${userId}`;
-            await Cookie(false, url, 'POST', newElement);
-
-            url = `http://localhost:3001/me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
-            await Cookie(false, url, 'GET',)
-                .then(allMovie => {
-                    setMovies(allMovie);
-                });
-        }
-
-        const pushOrDelete = (userId: number, userMovies: UserMovie[], element: Movie) => {
-            let foundMovie = userMovies.some((user) => user.title === element.title);
-            return foundMovie ? (<button onClick={() => handleDelete(userId, element)}>Delete</button>) : (<button onClick={() => handlePush(userId, element)}>Push</button>);
-
-        }
-
-        */
-        let trueUserId = Number(dataUser[0]); //pour prouver à TS que c'est un number
 
 
         return (
@@ -129,10 +135,33 @@ function Browser() {
                     <button onClick={() => handleSort('release_date')}>Date</button>
                     <button onClick={() => handleSort('vote_average')}>Rating</button>
                 </div>
-                <div>
-                    {Box(isLoading,data,userMovies,trueUserId)}
+                <div className="browser">
+                    {data.map((element) => (
+                        <Card sx={{ maxWidth: 345, mt: '20px',bgcolor: '#212E53' }}>
+                            <CardHeader sx={{ color: 'white' }}
+                                title={element.title}
+                                subheader={formatDate(element.release_date)}
+                            />
+                            <CardMedia
+                                component="img"
+                                height="194"
+                                image='https://quai10-website.s3.eu-west-3.amazonaws.com/backgrounds/sonic-3-le-film-0-fe033741ae88fb6d9e5296f7efd19e5c-0_2024-12-23-152750_vtuh.jpg'
+                                alt={element.title}
+                            />
+                            <CardContent>
+                                <Typography variant="body2" sx={{ color: 'gray' }}>
+                                    {element.overview}
+                                </Typography>
+                            </CardContent>
+                            <CardActions disableSpacing >
+                                <IconButton onClick={() => handlefavorites(element)}aria-label="add to favorites" >
+                                    {favorite(element) ? <FontAwesomeIcon icon={faHeartSolid} /> : <FontAwesomeIcon icon={faHeartRegular} />}
+                                </IconButton>
+                            </CardActions>
+                        </Card>
+                    ))}
                 </div>
-            </div>
+            </div >
         );
     } else {
         return (
@@ -144,4 +173,6 @@ function Browser() {
     }
 }
 
-export default Browser; 
+export default Browser;
+
+// {Box(isLoading,data,userMovies,trueUserId)}
