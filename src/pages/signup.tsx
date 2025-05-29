@@ -72,7 +72,7 @@ function Signup() {
         loadingPosition="start"
         variant="outlined"
     >
-        send request
+        Account creation
     </Button>
 
     let textFieldEmail = !isEmail ? <TextField error type='email' id="standard-error" label="Email required *" variant="standard" value={email} onChange={e => setEmail(e.target.value)} /> :
@@ -118,7 +118,7 @@ function Signup() {
                     {textFieldpassword}
                     {sendButton}
                 </Stack>
-                <p>if you have already created an account <Link to="/user">login</Link></p>
+                <p>if you have already created an account go to <Link to="/user">login</Link></p>
             </div>
 
         </div>

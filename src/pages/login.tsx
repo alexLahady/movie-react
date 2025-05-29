@@ -104,7 +104,7 @@ function Login() {
             </Stack>
 
             <p>{message}</p>
-            <p>Create account click on <Link to="/signup">signup</Link></p>
+            <p>If you don't have an account, go to <Link to="/signup">signup</Link></p>
         </div>
 
     )

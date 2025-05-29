@@ -4,13 +4,26 @@ import Cookie from "./cookie";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-
+import { jwtDecode } from "jwt-decode";
 
 
 function Banner() {
-
   const [dataUser, setDataUser] = useState<(number | string)[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  //trouver une solution pour deco auto pour ressoudre le problème du serveur qui crash si pas auto deco
+  //console.log(document.cookie);
+  /*
+  const token = document.cookie
+  .split('; ')
+  .find(row => row.startsWith('authtoken='))
+  ?.split('=')[1];
+
+
+   const decoded = jwtDecode(String(token));
+  console.log('toekn 2 = '+decoded);
+  console.log('le token decoder est ='+token);
+  */
 
   useEffect(() => {
     Cookie(true)

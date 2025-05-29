@@ -157,6 +157,9 @@ function Browser() {
                                 <IconButton onClick={() => handlefavorites(element)}aria-label="add to favorites" >
                                     {favorite(element) ? <FontAwesomeIcon icon={faHeartSolid} /> : <FontAwesomeIcon icon={faHeartRegular} />}
                                 </IconButton>
+                                <Typography sx={{ color: 'white' }}>
+                                    {element.vote_average}/10
+                                </Typography>
                             </CardActions>
                         </Card>
                     ))}

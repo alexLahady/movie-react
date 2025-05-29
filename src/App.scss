@@ -1,4 +1,45 @@
+.main {
+  position: absolute;
+  z-index: 1;
+  top: 31.25rem;
+  background-color: white;
+  border-radius: 50px 50px 0px 0px;
 
+
+  h2 {
+    font-size: 4ch;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 0px;
+    border-radius: 50px 50px 0px 0px;
+
+
+    
+    color: white;
+    background-color: #2E8ECE;
+  }
+
+
+}
+
+
+
+
+.app-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
+
+  .fa-heart {
+    color: red;
+  }
+
+  span {
+    color: white;
+  }
+}
 
 
 
@@ -21,6 +62,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
