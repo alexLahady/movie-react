@@ -32,7 +32,7 @@ function App() {
     fetch('http://localhost:3001')
       .then(response => response.json())
       .then(movie => {
-        //console.log(movie); // Log pour vérifier les données reçues
+        console.log(movie); // Log pour vérifier les données reçues
         setData(movie);
         setIsLoading(false);
       })
@@ -55,7 +55,7 @@ function App() {
       <main className='main'>
         <h2>Trend</h2>
         <div className='app-box'>
-          {isLoading ? 'loading.....' : data.map((element) => (
+          {isLoading ? 'loading.....' : data.slice(0,20).map((element) => (
             <Card key={element.id} sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53' }}>
               <CardHeader sx={{ color: 'white' }}
                 title={element.title}

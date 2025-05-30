@@ -1,4 +1,4 @@
-.browser {
+.browser-movie {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -11,4 +11,8 @@
     span {
         color: white;
     }
+}
+
+.browser-pagination {
+    text-align: center;
 }

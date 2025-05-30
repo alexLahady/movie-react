@@ -12,7 +12,8 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import '../styles/brower.scss';
-
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 interface Movie {
     id: number;
@@ -50,6 +51,12 @@ function Browser() {
     const [sort, setSort] = useState<'title' | 'release_date' | 'vote_average'>('title');
     const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
+    //valeur de la page
+    const [page, setPage] = useState<number>(1);
+
+    //valeur du tableau en fonction de la page(pour changer de page)
+    const [indexPage, setIndexPage] = useState<number>(0);
+
 
     //Affiche tout les films
     useEffect(() => {
@@ -83,11 +90,24 @@ function Browser() {
     }, [dataUser, sort, order]);
 
 
+
+    //pour avoir la valeur de la page
+    useEffect(() => {
+        console.log(page)
+        let truePage = page - 1;
+        setIndexPage(truePage * 8)
+    }, [page, indexPage]);
+
+
+
+
+
+
     if (!isLoading) {
 
-        const favorite = (element : Movie) => {
+        const favorite = (element: Movie) => {
             let foundMovie = userMovies.some((user) => user.title === element.title);
-            if(foundMovie) {
+            if (foundMovie) {
                 return true
             }
             return false
@@ -123,21 +143,19 @@ function Browser() {
             return date.toLocaleDateString('en-US');
         }
 
-
-
         return (
-            <div>
+            <div className="broswer">
                 <Banner />
                 <h2>list movies</h2>
-                <div className="library-sort">
+                <div className="browser-sort">
                     <h3>sort</h3>
                     <button onClick={() => handleSort('title')}>title</button>
                     <button onClick={() => handleSort('release_date')}>Date</button>
                     <button onClick={() => handleSort('vote_average')}>Rating</button>
                 </div>
-                <div className="browser">
-                    {data.map((element) => (
-                        <Card sx={{ maxWidth: 345, mt: '20px',bgcolor: '#212E53' }}>
+                <div className="browser-movie">
+                    {data.slice(indexPage, indexPage + 8).map((element) => (
+                        <Card sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53' }}>
                             <CardHeader sx={{ color: 'white' }}
                                 title={element.title}
                                 subheader={formatDate(element.release_date)}
@@ -154,7 +172,7 @@ function Browser() {
                                 </Typography>
                             </CardContent>
                             <CardActions disableSpacing >
-                                <IconButton onClick={() => handlefavorites(element)}aria-label="add to favorites" >
+                                <IconButton onClick={() => handlefavorites(element)} aria-label="add to favorites" >
                                     {favorite(element) ? <FontAwesomeIcon icon={faHeartSolid} /> : <FontAwesomeIcon icon={faHeartRegular} />}
                                 </IconButton>
                                 <Typography sx={{ color: 'white' }}>
@@ -164,7 +182,25 @@ function Browser() {
                         </Card>
                     ))}
                 </div>
-            </div >
+                <div className="browser-pagination">
+                    <Stack direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        sx={{ width: '100%', mt: 4, mb: 4 }} spacing={2}>
+                        <Pagination sx={{
+                            '& .MuiPaginationItem-root': {
+                                fontSize: '1.2rem',
+                            }
+                        }}
+                            page={page}
+                            onChange={(e, value) => 
+                                setPage(value)
+                              }
+                            //onClick={() => handlePage(page)}
+                            count={13} size="large" />
+                    </Stack>
+                </div>
+            </div>
         );
     } else {
         return (
