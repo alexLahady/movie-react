@@ -23,7 +23,34 @@
 
 }
 
+.main-redirection {
+  margin-top: 20px;
+  display: block; /* ou inline-block si tu veux garder le flux */
+  text-decoration: none;
+  background-color: #2E8ECE; /* ou ce que tu veux */
+  padding: 10px;
+  color: white;
+}
 
+.redirection-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  div {
+    font-size: 2ch;
+    margin-bottom: 3px;
+  }
+
+  svg {
+    font-size: 3ch;
+  }
+}
+
+.main-redirection:hover {
+  background-color: #63d6ff;
+}
 
 
 .app-box {

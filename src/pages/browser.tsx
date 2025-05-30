@@ -99,10 +99,6 @@ function Browser() {
     }, [page, indexPage]);
 
 
-
-
-
-
     if (!isLoading) {
 
         const favorite = (element: Movie) => {
@@ -143,6 +139,12 @@ function Browser() {
             return date.toLocaleDateString('en-US');
         }
 
+        //Pour savoir si l'utilisateur est pas connecté 
+        //Test pour savoir si sa renvoit une erreur et revoyer vrai si c'est le cas
+        const isNotConnected = !dataUser || (Array.isArray(dataUser) && dataUser.length === 0) || (typeof dataUser === 'object' && 'error' in dataUser);
+
+        //console.log('datauser valeur est de ' + isNotConnected);
+
         return (
             <div className="broswer">
                 <Banner />
@@ -172,9 +174,10 @@ function Browser() {
                                 </Typography>
                             </CardContent>
                             <CardActions disableSpacing >
-                                <IconButton onClick={() => handlefavorites(element)} aria-label="add to favorites" >
-                                    {favorite(element) ? <FontAwesomeIcon icon={faHeartSolid} /> : <FontAwesomeIcon icon={faHeartRegular} />}
-                                </IconButton>
+                                {isNotConnected ? <div></div> :
+                                    <IconButton onClick={() => handlefavorites(element)} aria-label="add to favorites" >
+                                        {favorite(element) ? <FontAwesomeIcon icon={faHeartSolid} /> : <FontAwesomeIcon icon={faHeartRegular} />}
+                                    </IconButton>}
                                 <Typography sx={{ color: 'white' }}>
                                     {element.vote_average}/10
                                 </Typography>
@@ -193,9 +196,9 @@ function Browser() {
                             }
                         }}
                             page={page}
-                            onChange={(e, value) => 
+                            onChange={(e, value) =>
                                 setPage(value)
-                              }
+                            }
                             //onClick={() => handlePage(page)}
                             count={13} size="large" />
                     </Stack>

@@ -144,33 +144,3 @@ function Library() {
 }
 
 export default Library;
-
-/*
-<h3>sort</h3>
-                        <button onClick={() => handleSort('title')}>title</button>
-                        <button onClick={() => handleSort('release_date')}>Date</button>
-                        <button onClick={() => handleSort('vote_average')}>Rating</button>
-
-*/
-
-
-
-
-
-/*
-<FormControl>
-      <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
-        name="radio-caca-group"
-      >
-        <FormControlLabel value="female" control={<Radio />} label="Female" />
-        <FormControlLabel value="male" control={<Radio />} label="Male" />
-        <FormControlLabel value="other" control={<Radio />} label="Other" />
-      </RadioGroup>
-    </FormControl>
-*/
-
-
-//<div className="movie">{Box(isLoading,movies)}</div>
