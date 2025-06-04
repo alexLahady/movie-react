@@ -1,21 +1,40 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import './App.scss';
 
+interface Movie {
+  id: number;
+  title: string;
+  overview: string;
+  release_date: string;
+  vote_average: number;
+}
+
+
+
+
 function App() {
+  const [data, setData] = useState<Movie[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetch('http://localhost:3001')
+      .then(response => response.json())
+      .then(movie => {
+        console.log(movie); // Log pour vérifier les données reçues
+        setData(movie);
+        setIsLoading(false);
+      })
+  }, []);
+
+
+
+
   return (
     <div className="App">
-      <header className="App-header"> 
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className="App-header">
+
+        bienvenue dans le projet Movie.
+
       </header>
     </div>
   );

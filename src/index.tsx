@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home />} /> {/* accueil et l'api */}
+      <Route path="/" element={<App />} /> {/* accueil et l'api */}
       <Route path="/me/movies" element={<Library />} /> {/* accueil et l'api */}
       <Route path="/user" element={<Login />} /> {/* accueil et l'api */}
       <Route path="/browser" element={<Browser />} /> {/* accueil et l'api */}
