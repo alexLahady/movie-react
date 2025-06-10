@@ -33,7 +33,7 @@ function App() {
     <div className="App">
       <header className="App-header">
 
-        bienvenue dans le projet Movie.
+        bienvenue dans le projet Movie. JE SUIS LA 
 
       </header>
     </div>
