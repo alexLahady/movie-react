@@ -17,7 +17,7 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001')
+    fetch('https://movie-test-vercel-delta.vercel.app/')
       .then(response => response.json())
       .then(movie => {
         console.log(movie); // Log pour vérifier les données reçues
