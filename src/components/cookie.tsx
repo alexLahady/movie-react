@@ -41,6 +41,7 @@ interface Movie {
 
 function Cookie(connect = false, url? : string,  methode? :"GET" | "POST" | "PUT" | "DELETE", data? : DataUser | CreateData | Movie | DeleteMovie) {
      const validUrl = url ?? ""; // verifie si l'url n'est pas null ou undifinied
+    console.log(validUrl);
     
     if(connect){
         return fetch('https://movie-test-vercel-delta.vercel.app/pro/pro', {
