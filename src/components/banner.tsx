@@ -34,7 +34,7 @@ function Banner() {
   }, []);
 
   const logout = async () => {
-    let url = 'http://localhost:3001/delete/logout';
+    let url = 'https://movie-test-vercel-delta.vercel.app/delete/logout';
     await Cookie(false, url, 'POST')
     window.location.reload();
   }

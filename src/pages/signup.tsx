@@ -50,7 +50,7 @@ function Signup() {
             };
 
             setPushButton(false);
-            let url = 'http://localhost:3001/users/signup'
+            let url = 'https://movie-test-vercel-delta.vercel.app/signup'
             const response = await Cookie(false, url, 'POST', signupData)
 
             if (response !== null) {

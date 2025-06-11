@@ -46,12 +46,12 @@ function Cards(movie: Movie, userMovie: UserMovie[]) {
     let foundMovie = userMovie.some((user) => user.title === movie.title);
     if (foundMovie) {
       let newElement = { title: movie.title, overview: movie.overview, release_date: movie.release_date, vote_average: movie.vote_average };
-      let url = `http://localhost:3001/me/movies/${userMovie[0].userId}`;
+      let url = `https://movie-test-vercel-delta.vercel.app/me/movies/${userMovie[0].userId}`;
       await Cookie(false, url, 'POST', newElement);
       fullHeart = true;
     } else {
       let deleteElement = { userId: userMovie[0].userId, title: movie.title }
-      let url = 'http://localhost:3001/delete/movie';
+      let url = 'https://movie-test-vercel-delta.vercel.app/delete/movie';
       await Cookie(false, url, 'DELETE', deleteElement);
       fullHeart = false;
     }

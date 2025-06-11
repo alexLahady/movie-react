@@ -43,7 +43,7 @@ function Cookie(connect = false, url? : string,  methode? :"GET" | "POST" | "PUT
      const validUrl = url ?? ""; // verifie si l'url n'est pas null ou undifinied
     
     if(connect){
-        return fetch('http://localhost:3001/pro/pro', {
+        return fetch('https://movie-test-vercel-delta.vercel.app/pro/pro', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
