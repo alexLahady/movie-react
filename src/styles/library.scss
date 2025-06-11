@@ -1,0 +1,51 @@
+.library {
+    h2 {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 3ch;
+    }
+}
+
+.library-grid {
+    display: grid;
+}
+
+.library-sort {
+    grid-column-start: 1;
+    grid-column-end:2 ;
+    grid-row-start: 1;
+    grid-row-end: 5;
+
+    margin-left: 20px;
+    margin-top: 25px;
+
+    #radio-buttons-sort {
+        font-size: 2.2ch;
+        margin-bottom: 5px;
+    }
+}
+
+.library-movie {
+    grid-column-start: 3;
+    grid-column-end:2 ;
+    grid-row-start: 3;
+    grid-row-end: 5;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    span {
+        color: white;
+    }
+}
+
+
+
+
+
+.library-connect {
+    font-size: 3ch;
+    margin-top: 5em;
+    text-align: center;
+}

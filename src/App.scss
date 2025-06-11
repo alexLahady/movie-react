@@ -1,11 +1,81 @@
-.App {
-  text-align: center;
+.main {
+  position: absolute;
+  z-index: 1;
+  top: 31.25rem;
+  background-color: white;
+  border-radius: 50px 50px 0px 0px;
+
+
+  h2 {
+    font-size: 4ch;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 0px;
+    border-radius: 50px 50px 0px 0px;
+
+
+    
+    color: white;
+    background-color: #2E8ECE;
+  }
+
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.main-redirection {
+  margin-top: 20px;
+  display: block; /* ou inline-block si tu veux garder le flux */
+  text-decoration: none;
+  background-color: #2E8ECE; /* ou ce que tu veux */
+  padding: 10px;
+  color: white;
 }
+
+.redirection-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  div {
+    font-size: 2ch;
+    margin-bottom: 3px;
+  }
+
+  svg {
+    font-size: 3ch;
+  }
+}
+
+.main-redirection:hover {
+  background-color: #63d6ff;
+}
+
+
+.app-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
+
+  .fa-heart {
+    color: red;
+  }
+
+  span {
+    color: white;
+  }
+}
+
+
+
+
+
+
+
+
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -13,25 +83,13 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
 
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
