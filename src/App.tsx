@@ -40,15 +40,24 @@ function App() {
   const [data, setData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    fetch('http://localhost:3001')
-      .then(response => response.json())
-      .then(movie => {
-        console.log(movie); // Log pour vérifier les données reçues
-        setData(movie);
-        setIsLoading(false);
-      })
-  }, []);
+ useEffect(() => {
+  fetch('http://localhost:3001/', {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(movie => {
+      console.log(movie); // Log pour vérifier les données reçues
+      setData(movie);
+      setIsLoading(false);
+    })
+    .catch(err => {
+      console.error("Erreur fetch :", err);
+    });
+}, []);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
