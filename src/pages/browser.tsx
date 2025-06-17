@@ -18,6 +18,7 @@ import Stack from '@mui/material/Stack';
 interface Movie {
     id: number;
     title: string;
+    poster_path: string;
     userId: number;
     overview: string;
     release_date: string;
@@ -27,6 +28,7 @@ interface Movie {
 interface UserMovie {
     id: number;
     title: string;
+    poster_path: string;
     userId: number;
     overview: string;
     release_date: string;
@@ -96,6 +98,11 @@ function Browser() {
         console.log(page)
         let truePage = page - 1;
         setIndexPage(truePage * 8)
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // ou 'auto' pour aller direct
+        });
     }, [page, indexPage]);
 
 
@@ -157,15 +164,15 @@ function Browser() {
                 </div>
                 <div className="browser-movie">
                     {data.slice(indexPage, indexPage + 8).map((element) => (
-                        <Card sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53' }}>
+                        <Card sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53', display: 'flex', flexDirection: 'column', }}>
                             <CardHeader sx={{ color: 'white' }}
                                 title={element.title}
                                 subheader={formatDate(element.release_date)}
                             />
                             <CardMedia
                                 component="img"
-                                height="194"
-                                image='https://quai10-website.s3.eu-west-3.amazonaws.com/backgrounds/sonic-3-le-film-0-fe033741ae88fb6d9e5296f7efd19e5c-0_2024-12-23-152750_vtuh.jpg'
+                                height="500"
+                                image={element.poster_path}
                                 alt={element.title}
                             />
                             <CardContent>
@@ -173,7 +180,7 @@ function Browser() {
                                     {element.overview}
                                 </Typography>
                             </CardContent>
-                            <CardActions disableSpacing >
+                            <CardActions disableSpacing sx={{ mt: 'auto' }}>
                                 {isNotConnected ? <div></div> :
                                     <IconButton onClick={() => handlefavorites(element)} aria-label="add to favorites" >
                                         {favorite(element) ? <FontAwesomeIcon icon={faHeartSolid} /> : <FontAwesomeIcon icon={faHeartRegular} />}

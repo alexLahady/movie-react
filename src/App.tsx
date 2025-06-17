@@ -22,17 +22,20 @@ import { useState, useEffect } from 'react';
 interface Movie {
   id: number;
   title: string;
+  poster_path : string;
   overview: string;
   release_date: string;
   vote_average: number;
 }
 
-interface Movie {
+interface userMovie {
   id: number;
   title: string;
+  poster_path : string;
   overview: string;
   release_date: string;
   vote_average: number;
+  userId : number;
 }
 
 
@@ -77,15 +80,15 @@ function App() {
         <h2>Trend</h2>
         <div className='app-box'>
           {isLoading ? 'loading.....' : data.slice(0, 20).map((element) => (
-            <Card key={element.id} sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53' }}>
+            <Card key={element.id} sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53', display: 'flex', flexDirection: 'column',  }}>
               <CardHeader sx={{ color: 'white' }}
                 title={element.title}
                 subheader={formatDate(element.release_date)}
               />
               <CardMedia
                 component="img"
-                height="194"
-                image='https://quai10-website.s3.eu-west-3.amazonaws.com/backgrounds/sonic-3-le-film-0-fe033741ae88fb6d9e5296f7efd19e5c-0_2024-12-23-152750_vtuh.jpg'
+                height="500"
+                image={element.poster_path}
                 alt={element.title}
               />
               <CardContent>
@@ -93,7 +96,7 @@ function App() {
                   {element.overview}
                 </Typography>
               </CardContent>
-              <CardActions disableSpacing >
+              <CardActions disableSpacing sx={{ mt: 'auto' }} >
                 <Typography sx={{ color: 'white' }}>
                   {element.vote_average}/10
                 </Typography>
