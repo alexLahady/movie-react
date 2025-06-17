@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import '../styles/login.scss';
 
+import { useLocation } from 'react-router-dom';
 
 interface LoginData {
     email: string;
@@ -17,6 +18,9 @@ interface LoginData {
 function Login() {
     //variable pour changer de page React router v6
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const [signupLocation, setSignupLocation] = useState<boolean>(false);
 
     //variable d'email
     const [email, setEmail] = useState<string>('');
@@ -37,6 +41,14 @@ function Login() {
         password.length >= 2 ? setIsPassword(true) : setIsPassword(false);
 
     }, [email, password]);
+
+    useEffect(() => {
+        if (location.state?.fromSignup) {
+            console.log("Utilisateur arrivé après signup");
+            setSignupLocation(true);
+            // Tu peux afficher un message de bienvenue, ou autre
+        }
+    }, [location]);
 
     //post
     const handleSubmit = async () => {
@@ -97,6 +109,7 @@ function Login() {
     return (
         <div className='login'>
             <Banner />
+            {!signupLocation ? <div></div> : <div className='login-created'>Account created log </div>}
             <Stack direction='column' spacing={2} sx={{ width: '400px', ml: 4 }}>
                 {textFieldEmail}
                 {textFieldpassword}
@@ -104,7 +117,7 @@ function Login() {
             </Stack>
 
             <p>{message}</p>
-            <p>If you don't have an account, go to <Link to="/signup">signup</Link></p>
+            {!signupLocation ? <p>If you don't have an account, go to <Link to="/signup">signup</Link></p> : <div></div>}
         </div>
 
     )

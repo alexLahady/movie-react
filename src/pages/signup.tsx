@@ -54,7 +54,10 @@ function Signup() {
             const response = await Cookie(false, url, 'POST', signupData)
 
             if (response !== null) {
-                navigate('/user', { replace: true });
+                navigate('/user', {
+                    replace: true,
+                    state: { fromSignup: true }
+                });
             } else {
                 // Si la réponse n'est pas OK, affichez un message d'erreur
                 console.log('Erreur lors de l\'envoi des données');

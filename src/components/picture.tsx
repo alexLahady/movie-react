@@ -1,11 +1,44 @@
+import { useEffect, useState } from 'react';
 import '../styles/picture.scss';
 
-function Picture(){
+interface Movie {
+    id: number;
+    title: string;
+    poster_path: string;
+    overview: string;
+    release_date: string;
+    vote_average: number;
+}
+
+
+function Picture() {
+    const [data, setData] = useState<Movie[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        fetch('https://movie-test-vercel-delta.vercel.app/', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(movie => {
+                //console.log(movie); // Log pour vérifier les données reçues
+                setData(movie);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.error("Erreur fetch :", err);
+            });
+    }, []);
+
     return (
         <div className='picture-img'>
-            <img src='https://quai10-website.s3.eu-west-3.amazonaws.com/backgrounds/sonic-3-le-film-0-fe033741ae88fb6d9e5296f7efd19e5c-0_2024-12-23-152750_vtuh.jpg' alt='sonic'></img>
+            {!isLoading ? <img src={data[0].poster_path} alt={data[0].title}></img> : <div>...loading</div>}
         </div>
     )
 }
 
-export default Picture; 
+export default Picture;
