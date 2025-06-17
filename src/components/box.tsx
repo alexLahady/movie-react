@@ -3,6 +3,7 @@ import Cookie from "./cookie";
 interface Movie {
     id: number;
     title: string;
+    poster_path : string;
     overview: string;
     release_date: string;
     vote_average: number;
@@ -12,6 +13,7 @@ interface Movie {
 interface UserMovie {
     id: number;
     title: string;
+    poster_path : string;
     userId: number;
     overview: string;
     release_date: string;
@@ -33,7 +35,7 @@ const handleDelete = async (userId : number, element: Movie) => {
 }
 
 const handlePush = async ( userId : number , element : Movie) => {
-    let newElement = {title :  element.title , overview : element.overview, release_date : element.release_date, vote_average : element.vote_average};
+    let newElement = {title :  element.title ,poster_path : element.poster_path, overview : element.overview, release_date : element.release_date, vote_average : element.vote_average};
     let url = `http://localhost:3001/me/movies/${userId}`;
     await Cookie(false,url,'POST',newElement);
 

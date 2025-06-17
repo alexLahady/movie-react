@@ -14,6 +14,7 @@ import Cookie from './cookie';
 interface Movie {
   id: number;
   title: string;
+  poster_path : string;
   overview: string;
   release_date: string;
   vote_average: number;
@@ -23,6 +24,7 @@ interface Movie {
 interface UserMovie {
   id: number;
   title: string;
+  poster_path : string;
   userId: number;
   overview: string;
   release_date: string;
@@ -45,7 +47,7 @@ function Cards(movie: Movie, userMovie: UserMovie[]) {
   const favorites = async () => {
     let foundMovie = userMovie.some((user) => user.title === movie.title);
     if (foundMovie) {
-      let newElement = { title: movie.title, overview: movie.overview, release_date: movie.release_date, vote_average: movie.vote_average };
+      let newElement = { title: movie.title, poster_path: movie.poster_path, overview: movie.overview, release_date: movie.release_date, vote_average: movie.vote_average };
       let url = `https://movie-test-vercel-delta.vercel.app/me/movies/${userMovie[0].userId}`;
       await Cookie(false, url, 'POST', newElement);
       fullHeart = true;

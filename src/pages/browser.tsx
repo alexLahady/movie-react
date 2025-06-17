@@ -126,15 +126,21 @@ function Browser() {
         const handlefavorites = async (element: Movie) => {
             let foundMovie = userMovies.some((user) => user.title === element.title);
             if (!foundMovie) {
-                let newElement = { title: element.title, overview: element.overview, release_date: element.release_date, vote_average: element.vote_average };
-                let url = `http://localhost:3001/me/movies/${dataUser[0]}`;
+                let newElement = {
+                    title: element.title,
+                    poster_path: element.poster_path,
+                    overview: element.overview,
+                    release_date: element.release_date,
+                    vote_average: element.vote_average
+                };
+                let url = `https://movie-test-vercel-delta.vercel.app/me/movies/${dataUser[0]}`;
                 await Cookie(false, url, 'POST', newElement);
 
                 window.location.reload();
 
             } else {
                 let deleteElement = { userId: trueUserId, title: element.title }
-                let url = 'http://localhost:3001/delete/movie';
+                let url = 'https://movie-test-vercel-delta.vercel.app/delete/movie';
                 await Cookie(false, url, 'DELETE', deleteElement);
 
                 window.location.reload();
