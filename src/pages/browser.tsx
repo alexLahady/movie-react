@@ -37,6 +37,9 @@ interface UserMovie {
 }
 
 function Browser() {
+    //refresh 
+    const [refreshKey, setRefreshKey] = useState(0);
+
     //Liste de l'api
     const [data, setData] = useState<Movie[]>([]);
 
@@ -69,9 +72,9 @@ function Browser() {
                 setData(movie);
                 setIsLoading(false);
             })
-    }, []);
+    }, [refreshKey]);
 
-    //Donnée utilisateur 
+    //Donnée utilisateur sécurisé
     useEffect(() => {
         Cookie(true)
             .then(response => {
@@ -89,7 +92,8 @@ function Browser() {
                     setUserMovies(allMovie);
                 });
         }
-    }, [dataUser, sort, order]);
+        //console.log(userMovies);
+    }, [dataUser, sort, order,refreshKey]);
 
 
 
@@ -101,7 +105,7 @@ function Browser() {
 
         window.scrollTo({
             top: 0,
-            behavior: 'smooth' // ou 'auto' pour aller direct
+            behavior: 'smooth' 
         });
     }, [page, indexPage]);
 
@@ -136,14 +140,16 @@ function Browser() {
                 let url = `https://movie-test-vercel-delta.vercel.app/me/movies/${dataUser[0]}`;
                 await Cookie(false, url, 'POST', newElement);
 
-                window.location.reload();
+                //window.location.reload();
+                setRefreshKey(prev => prev + 1);
 
             } else {
                 let deleteElement = { userId: trueUserId, title: element.title }
                 let url = 'https://movie-test-vercel-delta.vercel.app/delete/movie';
                 await Cookie(false, url, 'DELETE', deleteElement);
 
-                window.location.reload();
+                //window.location.reload();
+                setRefreshKey(prev => prev + 1);
             }
         }
 
