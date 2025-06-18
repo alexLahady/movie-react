@@ -109,7 +109,7 @@ function Login() {
     return (
         <div className='login'>
             <Banner />
-            {!signupLocation ? <div></div> : <div className='login-created'>Account created log </div>}
+            {!signupLocation ? <div></div> : <h2 className='login-created'>Your account has been created. You can now sign in with your credentials.</h2>}
             <Stack direction='column' spacing={2} sx={{ width: '400px', ml: 4 }}>
                 {textFieldEmail}
                 {textFieldpassword}
