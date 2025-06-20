@@ -1,12 +1,19 @@
+//Component
 import Banner from "../components/banner";
-import { useState, useEffect } from 'react';
-import { Link } from "react-router";
-import { useNavigate } from 'react-router-dom';
 import Cookie from "../components/cookie";
+
+//CSS
+import '../styles/signup.scss';
+
+//Framework MUI
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import '../styles/signup.scss';
+
+//React
+import { useState, useEffect } from 'react';
+import { Link } from "react-router";
+import { useNavigate } from 'react-router-dom';
 
 interface SignupData {
     email: string;

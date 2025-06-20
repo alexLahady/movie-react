@@ -1,14 +1,20 @@
+//Component
 import Banner from '../components/banner';
-import { useState, useEffect } from 'react';
-import { Link } from "react-router";
-import { useNavigate } from 'react-router-dom';
 import Cookie from '../components/cookie';
+
+//CSS
+import '../styles/login.scss';
+
+//Framework MUI
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import '../styles/login.scss';
 
+//React
 import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router";
 
 interface LoginData {
     email: string;

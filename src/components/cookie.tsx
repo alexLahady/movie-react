@@ -1,3 +1,6 @@
+import { Movie } from "../utils/type";
+
+
 //amélioration futur
 
 /*
@@ -24,12 +27,10 @@ interface DeleteMovie {
     title : string;
 }
 
-interface CreateData {
-    email: string;
+interface CreateData extends DataUser{
     name : string;
-    password: string;
 }
-
+/*
 interface Movie {
     title: string;
     poster_path : string;
@@ -38,7 +39,7 @@ interface Movie {
     vote_average: number;
 }
 
-
+*/
 
 function Cookie(connect = false, url? : string,  methode? :"GET" | "POST" | "PUT" | "DELETE", data? : DataUser | CreateData | Movie | DeleteMovie) {
      const validUrl = url ?? ""; // verifie si l'url n'est pas null ou undifinied

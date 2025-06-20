@@ -1,54 +1,47 @@
+//Component
 import Banner from "../components/banner";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Cookie from "../components/cookie";
-//import Box from "../components/box";
+import renderCards from "../components/renderCards";
+
+//CSS
 import '../styles/library.scss';
 
-import Button from '@mui/material/Button';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Typography from '@mui/material/Typography';
-import CardMedia from '@mui/material/CardMedia';
-//import IconButton from '@mui/material/IconButton';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
+//Utils
+import { Movie } from "../utils/type";
 
+//Framework MUI
+import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-
-interface Movie {
-    id: number;
-    title: string;
-    poster_path : string;
-    overview: string;
-    release_date: string;
-    vote_average: number;
-}
+//React
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Library() {
-    const [dataUser, setDataUser] = useState<(number | string)[]>([]);
-    const [movies, setMovies] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    //Date utilisateur id et nom
+    const [dataUser, setDataUser] = useState<(number | string)[]>([]);
+
+    //Data des films de l'utilisateur
+    const [movies, setMovies] = useState<Movie[]>([]);
+
+    //Parametre pour ranger les films
     const [sort, setSort] = useState<'title' | 'release_date' | 'vote_average'>('title');
     const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
-
     useEffect(() => {
+        // Vérifier si les données utilisateur sont prêtes
         Cookie(true)
             .then(response => {
                 setDataUser(response);
                 setIsLoading(false);
             })
-    }, []);
 
-
-    useEffect(() => {
-        // Vérifier si les données utilisateur sont prêtes
         if (dataUser.length === 2) {
             let url = `https://movie-test-vercel-delta.vercel.app/me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
             Cookie(false, url, 'GET',)
@@ -77,11 +70,6 @@ function Library() {
                 criteria === 'title' ? setOrder('asc') : setOrder('desc');
             };
 
-            const formatDate = (dateString: string) => {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-US');
-            }
-
             return (
                 <div className="library">
                     <Banner />
@@ -104,30 +92,8 @@ function Library() {
                         <div className="library-movie">
                             {isLoading ? 'Loading....' :
                                 movies.map((element) => (
-                                    <Card sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53', display: 'flex', flexDirection: 'column', }}>
-                                        <CardHeader sx={{ color: 'white' }}
-                                            title={element.title}
-                                            subheader={formatDate(element.release_date)}
-                                        />
-                                        <CardMedia
-                                            component="img"
-                                            height="500"
-                                            image={element.poster_path}
-                                            alt={element.title}
-                                        />
-                                        <CardContent>
-                                            <Typography variant="body2" sx={{ color: 'gray' }}>
-                                                {element.overview}
-                                            </Typography>
-                                        </CardContent>
-                                        <CardActions disableSpacing sx={{ mt: 'auto' }}>
-                                            <Typography sx={{ color: 'white' }}>
-                                                {element.vote_average}/10
-                                            </Typography>
-                                        </CardActions>
-                                    </Card>
+                                    renderCards(true, element)
                                 ))
-
                             }
                         </div>
                     </div>

@@ -15,26 +15,7 @@ import '../styles/brower.scss';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
-interface Movie {
-    id: number;
-    title: string;
-    poster_path: string;
-    userId: number;
-    overview: string;
-    release_date: string;
-    vote_average: number;
-}
-
-interface UserMovie {
-    id: number;
-    title: string;
-    poster_path: string;
-    userId: number;
-    overview: string;
-    release_date: string;
-    vote_average: number;
-
-}
+import { Movie, UserMovie } from "../utils/type";
 
 function Browser() {
     //refresh 
@@ -72,7 +53,7 @@ function Browser() {
                 setData(movie);
                 setIsLoading(false);
             })
-    }, [refreshKey]);
+    }, []);
 
     //Donnée utilisateur sécurisé
     useEffect(() => {

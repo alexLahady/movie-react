@@ -1,15 +1,11 @@
-import { useEffect, useState } from 'react';
+//utils
+import { Movie } from '../utils/type';
+
+//CSS
 import '../styles/picture.scss';
 
-interface Movie {
-    id: number;
-    title: string;
-    poster_path: string;
-    overview: string;
-    release_date: string;
-    vote_average: number;
-}
-
+//React
+import { useEffect, useState } from 'react';
 
 function Picture() {
     const [data, setData] = useState<Movie[]>([]);
@@ -26,7 +22,7 @@ function Picture() {
             .then(response => response.json())
             .then(movie => {
                 //console.log(movie); // Log pour vérifier les données reçues
-                setData(movie);
+                setData(movie.slice(0, 6));
                 setIsLoading(false);
             })
             .catch(err => {

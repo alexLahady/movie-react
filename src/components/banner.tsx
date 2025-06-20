@@ -1,11 +1,17 @@
-import { Link } from "react-router";
-import "../styles/banner.scss";
+//Component
 import Cookie from "./cookie";
-import { useState, useEffect } from "react";
+
+//CSS
+import "../styles/banner.scss";
+
+//Framework FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 //import { jwtDecode } from "jwt-decode";
 
+//React
+import { useState, useEffect } from "react";
+import { Link } from "react-router";
 
 function Banner() {
   const [dataUser, setDataUser] = useState<(number | string)[]>([]);
