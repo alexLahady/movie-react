@@ -11,3 +11,4 @@ export interface UserMovie extends Movie {
   userId: number;
 }
 
+export let apiUrl = process.env.REACT_APP_BASE_URL || '';

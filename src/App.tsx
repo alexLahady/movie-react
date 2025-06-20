@@ -1,14 +1,14 @@
 //Component
 import Banner from './components/banner';
 import Picture from './components/picture';
-import renderCards from './components/renderCards';
+import RenderCards from './components/renderCards';
 
 //CSS
 import './App.scss';
 import './index.scss';
 
 //utils
-import { Movie } from './utils/type';
+import { Movie, apiUrl } from './utils/type';
 
 //Framework Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,7 +24,7 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch('https://movie-test-vercel-delta.vercel.app/', {
+    fetch(apiUrl, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -54,7 +54,9 @@ function App() {
       <main className='main'>
         <h2>Trend</h2>
         <div className='app-box'>
-          {isLoading ? 'loading.....': data.map((element) => renderCards(true, element))}
+          {isLoading ? 'loading.....' : data.map((element) =>
+            RenderCards(true,element)
+          )}
         </div>
         <Link to='/browser' className='main-redirection'>
           <div className='redirection-content'>

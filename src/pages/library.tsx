@@ -1,13 +1,13 @@
 //Component
 import Banner from "../components/banner";
 import Cookie from "../components/cookie";
-import renderCards from "../components/renderCards";
+import RenderCards from "../components/renderCards";
 
 //CSS
 import '../styles/library.scss';
 
 //Utils
-import { Movie } from "../utils/type";
+import { Movie, apiUrl } from "../utils/type";
 
 //Framework MUI
 import Button from '@mui/material/Button';
@@ -41,10 +41,12 @@ function Library() {
                 setDataUser(response);
                 setIsLoading(false);
             })
+    }, []);
 
+     useEffect(() => {
         if (dataUser.length === 2) {
-            let url = `https://movie-test-vercel-delta.vercel.app/me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
-            Cookie(false, url, 'GET',)
+            let reqUrl = `${apiUrl}me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
+            Cookie(false, reqUrl, 'GET',)
                 .then(allMovie => {
                     setMovies(allMovie);
                     setIsLoading(false);
@@ -92,7 +94,7 @@ function Library() {
                         <div className="library-movie">
                             {isLoading ? 'Loading....' :
                                 movies.map((element) => (
-                                    renderCards(true, element)
+                                    RenderCards(true, element)
                                 ))
                             }
                         </div>

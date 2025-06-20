@@ -1,5 +1,4 @@
-import { Movie } from "../utils/type";
-
+import { Movie,apiUrl } from "../utils/type";
 
 //amélioration futur
 
@@ -41,12 +40,13 @@ interface Movie {
 
 */
 
-function Cookie(connect = false, url? : string,  methode? :"GET" | "POST" | "PUT" | "DELETE", data? : DataUser | CreateData | Movie | DeleteMovie) {
-     const validUrl = url ?? ""; // verifie si l'url n'est pas null ou undifinied
-    console.log(validUrl);
+function Cookie(connect = false, reqUrl? : string,  methode? :"GET" | "POST" | "PUT" | "DELETE", data? : DataUser | CreateData | Movie | DeleteMovie) {
+     const validUrl = reqUrl ?? ""; // verifie si l'url n'est pas null ou undifinied
+    console.log("url reçu "+validUrl);
     
     if(connect){
-        return fetch('https://movie-test-vercel-delta.vercel.app/pro/pro', {
+        console.log(`${apiUrl}pro/pro`);
+        return fetch(`${apiUrl}pro/pro`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

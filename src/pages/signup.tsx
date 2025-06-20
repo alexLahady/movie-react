@@ -2,6 +2,9 @@
 import Banner from "../components/banner";
 import Cookie from "../components/cookie";
 
+//utils
+import { apiUrl } from "../utils/type";
+
 //CSS
 import '../styles/signup.scss';
 
@@ -57,7 +60,7 @@ function Signup() {
             };
 
             setPushButton(false);
-            let url = 'https://movie-test-vercel-delta.vercel.app/users/signup'
+            let url = `${apiUrl}users/signup`
             const response = await Cookie(false, url, 'POST', signupData)
 
             if (response !== null) {
