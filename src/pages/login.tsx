@@ -1,14 +1,23 @@
+//Component
 import Banner from '../components/banner';
-import { useState, useEffect } from 'react';
-import { Link } from "react-router";
-import { useNavigate } from 'react-router-dom';
 import Cookie from '../components/cookie';
+
+//utils
+import { apiUrl } from '../utils/type';
+
+//CSS
+import '../styles/login.scss';
+
+//Framework MUI
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import '../styles/login.scss';
 
+//React
 import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router";
 
 interface LoginData {
     email: string;
@@ -60,7 +69,7 @@ function Login() {
             };
             //console.log(loginData);
             setPushButton(false);
-            let url = 'https://movie-test-vercel-delta.vercel.app/users/login'
+            let url = `${apiUrl}users/login`
             const response = await Cookie(false, url, 'POST', loginData)
 
             if (response !== null) {
@@ -109,7 +118,7 @@ function Login() {
     return (
         <div className='login'>
             <Banner />
-            {!signupLocation ? <div></div> : <div className='login-created'>Account created log </div>}
+            {!signupLocation ? <div></div> : <h2 className='login-created'>Your account has been created. You can now sign in with your credentials.</h2>}
             <Stack direction='column' spacing={2} sx={{ width: '400px', ml: 4 }}>
                 {textFieldEmail}
                 {textFieldpassword}

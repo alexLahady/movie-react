@@ -1,11 +1,20 @@
-import { Link } from "react-router";
-import "../styles/banner.scss";
+//Component
 import Cookie from "./cookie";
-import { useState, useEffect } from "react";
+
+//utils
+import { apiUrl } from "../utils/type";
+
+//CSS
+import "../styles/banner.scss";
+
+//Framework FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 //import { jwtDecode } from "jwt-decode";
 
+//React
+import { useState, useEffect } from "react";
+import { Link } from "react-router";
 
 function Banner() {
   const [dataUser, setDataUser] = useState<(number | string)[]>([]);
@@ -34,7 +43,7 @@ function Banner() {
   }, []);
 
   const logout = async () => {
-    let url = 'https://movie-test-vercel-delta.vercel.app/delete/logout';
+    let url = `${apiUrl}delete/logout`;
     await Cookie(false, url, 'POST')
     window.location.reload();
   }
