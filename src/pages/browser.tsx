@@ -67,7 +67,7 @@ function Browser() {
     useEffect(() => {
         // Vérifier si les données utilisateur sont prêtes
         if (dataUser.length === 2) {
-            let url = `${apiUrl}me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
+            let url = `${apiUrl}/me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
             Cookie(false, url, 'GET',)
                 .then(allMovie => {
                     setUserMovies(allMovie);
@@ -118,7 +118,7 @@ function Browser() {
                     release_date: element.release_date,
                     vote_average: element.vote_average
                 };
-                let url = `${apiUrl}me/movies/${dataUser[0]}`;
+                let url = `${apiUrl}/me/movies/${dataUser[0]}`;
                 await Cookie(false, url, 'POST', newElement);
 
                 //window.location.reload();
@@ -126,7 +126,7 @@ function Browser() {
 
             } else {
                 let deleteElement = { userId: trueUserId, title: element.title }
-                let url = `${apiUrl}delete/movie`;
+                let url = `${apiUrl}/delete/movie`;
                 await Cookie(false, url, 'DELETE', deleteElement);
 
                 //window.location.reload();

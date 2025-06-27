@@ -43,7 +43,7 @@ function Banner() {
   }, []);
 
   const logout = async () => {
-    let url = `${apiUrl}delete/logout`;
+    let url = `${apiUrl}/delete/logout`;
     await Cookie(false, url, 'POST')
     window.location.reload();
   }

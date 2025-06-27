@@ -45,7 +45,7 @@ function Library() {
 
      useEffect(() => {
         if (dataUser.length === 2) {
-            let reqUrl = `${apiUrl}me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
+            let reqUrl = `${apiUrl}/me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
             Cookie(false, reqUrl, 'GET',)
                 .then(allMovie => {
                     setMovies(allMovie);

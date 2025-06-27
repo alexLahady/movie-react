@@ -2,6 +2,38 @@
     position: relative;
     text-align: center;
     background-color: rgb(67, 67, 67);
-    
+
+    .slider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        //margin: 30px auto;
+        gap: 10px;
+    }
+
+    .slider-container {
+        display: flex;
+        overflow: hidden;
+        gap: 10px;
+        width: 1500px; //la pour ajuster l'image
+    }
+
+    .slider-container img {
+        width: 450px;
+        height: 750px;
+        object-fit: cover;
+        //border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    button {
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 24px;
+        padding: 10px;
+        cursor: pointer;
+    }
 
 }

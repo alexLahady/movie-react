@@ -69,7 +69,7 @@ function Login() {
             };
             //console.log(loginData);
             setPushButton(false);
-            let url = `${apiUrl}users/login`
+            let url = `${apiUrl}/users/login`
             const response = await Cookie(false, url, 'POST', loginData)
 
             if (response !== null) {

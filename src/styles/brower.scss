@@ -1,3 +1,9 @@
+.broswer {
+    h2 {
+        text-align:center;
+    }
+}
+
 .browser-movie {
     display: flex;
     flex-wrap: wrap;
@@ -15,4 +21,9 @@
 
 .browser-pagination {
     text-align: center;
+}
+
+.browser-sort {
+    text-align: center;
+    
 }

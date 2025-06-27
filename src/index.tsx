@@ -7,6 +7,7 @@ import Browser from './pages/browser';
 import Library from './pages/library';
 import Login from './pages/login';
 import Signup from './pages/signup';
+import Statut from './pages/statut';
 
 //import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(
@@ -23,6 +24,7 @@ root.render(
         <Route path="/user" element={<Login />} />
         <Route path="/browser" element={<Browser />} />
         <Route path='/signup' element={<Signup />} />
+        <Route path='/status' element={<Statut />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -45,8 +45,8 @@ function Cookie(connect = false, reqUrl? : string,  methode? :"GET" | "POST" | "
     console.log("url reçu "+validUrl);
     
     if(connect){
-        console.log(`${apiUrl}pro/pro`);
-        return fetch(`${apiUrl}pro/pro`, {
+        console.log(`${apiUrl}/pro/pro`);
+        return fetch(`${apiUrl}/pro/pro`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

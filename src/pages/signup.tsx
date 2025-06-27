@@ -60,7 +60,7 @@ function Signup() {
             };
 
             setPushButton(false);
-            let url = `${apiUrl}users/signup`
+            let url = `${apiUrl}/users/signup`
             const response = await Cookie(false, url, 'POST', signupData)
 
             if (response !== null) {

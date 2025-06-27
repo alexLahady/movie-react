@@ -10,12 +10,16 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
 
 //Framework FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import Cookie from './cookie';
+
+//React 
+import { Link } from 'react-router-dom';
 
 //pas de boucle je fais juste le test sur le movie est dans le usermovie
 //ensuite j'affiche le coeur vide ou plein en fonction de usermovie
@@ -33,12 +37,14 @@ function RenderCards(showClassic: boolean, movie: Movie, userMovie?: UserMovie[]
           title={movie.title}
           subheader={formatDate(movie.release_date)}
         />
-        <CardMedia
-          component="img"
-          height="500"
-          image={movie.poster_path}
-          alt={movie.title}
-        />
+        <CardActionArea component={Link} to={`/status?title=${movie.title}`}>
+          <CardMedia
+            component="img"
+            height="500"
+            image={movie.poster_path}
+            alt={movie.title}
+          />
+        </CardActionArea>
         <CardContent>
           <Typography variant="body2" sx={{ color: 'gray' }}>
             {movie.overview}
@@ -53,7 +59,7 @@ function RenderCards(showClassic: boolean, movie: Movie, userMovie?: UserMovie[]
     );
   } else {
     return (
-       <Card sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53', display: 'flex', flexDirection: 'column', }}>
+      <Card sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53', display: 'flex', flexDirection: 'column', }}>
         <CardHeader sx={{ color: 'white' }}
           title={movie.title}
           subheader={formatDate(movie.release_date)}
