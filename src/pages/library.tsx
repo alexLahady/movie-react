@@ -43,7 +43,7 @@ function Library() {
             })
     }, []);
 
-     useEffect(() => {
+    useEffect(() => {
         if (dataUser.length === 2) {
             let reqUrl = `${apiUrl}/me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
             Cookie(false, reqUrl, 'GET',)
@@ -94,7 +94,10 @@ function Library() {
                         <div className="library-movie">
                             {isLoading ? 'Loading....' :
                                 movies.map((element) => (
-                                    RenderCards(true, element)
+                                    <RenderCards
+                                        showClassic={true}
+                                        movie={element}
+                                    />
                                 ))
                             }
                         </div>

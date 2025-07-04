@@ -1,21 +1,32 @@
+//Component
 import Banner from "../components/banner";
-import { useState, useEffect } from "react";
 import Cookie from "../components/cookie";
-import IconButton from '@mui/material/IconButton';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
+
+//CSS
+import '../styles/brower.scss';
+
+//utils
+import { Movie, UserMovie, apiUrl } from "../utils/type";
+
+//Framework
+//Fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+//MUI
+import IconButton from '@mui/material/IconButton';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
-import '../styles/brower.scss';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+//import CircularProgress from '@mui/material/CircularProgress';
 
-import { Movie, UserMovie, apiUrl } from "../utils/type";
+//React
+import { useState, useEffect } from "react";
 
 function Browser() {
     //refresh 
@@ -42,7 +53,6 @@ function Browser() {
 
     //valeur du tableau en fonction de la page(pour changer de page)
     const [indexPage, setIndexPage] = useState<number>(0);
-
 
     //Affiche tout les films
     useEffect(() => {
@@ -74,9 +84,9 @@ function Browser() {
                 });
         }
         //console.log(userMovies);
-    }, [dataUser, sort, order,refreshKey]);
+    }, [dataUser, sort, order, refreshKey]);
 
-
+    const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     //pour avoir la valeur de la page
     useEffect(() => {
@@ -86,10 +96,9 @@ function Browser() {
 
         window.scrollTo({
             top: 0,
-            behavior: 'smooth' 
+            behavior: 'smooth'
         });
     }, [page, indexPage]);
-
 
     if (!isLoading) {
 
@@ -121,14 +130,17 @@ function Browser() {
                 let url = `${apiUrl}/me/movies/${dataUser[0]}`;
                 await Cookie(false, url, 'POST', newElement);
 
+                await wait(200);
                 //window.location.reload();
                 setRefreshKey(prev => prev + 1);
 
             } else {
                 let deleteElement = { userId: trueUserId, title: element.title }
+                console.log(deleteElement);
                 let url = `${apiUrl}/delete/movie`;
                 await Cookie(false, url, 'DELETE', deleteElement);
 
+                await wait(200);
                 //window.location.reload();
                 setRefreshKey(prev => prev + 1);
             }
@@ -138,6 +150,7 @@ function Browser() {
             const date = new Date(dateString);
             return date.toLocaleDateString('en-US');
         }
+
 
         //Pour savoir si l'utilisateur est pas connecté 
         //Test pour savoir si sa renvoit une erreur et revoyer vrai si c'est le cas
@@ -176,7 +189,10 @@ function Browser() {
                             <CardActions disableSpacing sx={{ mt: 'auto' }}>
                                 {isNotConnected ? <div></div> :
                                     <IconButton onClick={() => handlefavorites(element)} aria-label="add to favorites" >
-                                        {favorite(element) ? <FontAwesomeIcon icon={faHeartSolid} /> : <FontAwesomeIcon icon={faHeartRegular} />}
+                                        {favorite(element) ?
+                                            <FontAwesomeIcon icon={faHeartSolid} />
+                                            :
+                                            <FontAwesomeIcon icon={faHeartRegular} />}
                                     </IconButton>}
                                 <Typography sx={{ color: 'white' }}>
                                     {element.vote_average}/10
@@ -217,4 +233,13 @@ function Browser() {
 
 export default Browser;
 
-// {Box(isLoading,data,userMovies,trueUserId)}
+/*
+//pour le chargement plus tard
+<CircularProgress size={18} sx={{
+                                    '& .MuiCircularProgress-circle': {
+                                        stroke: '#ff1744',
+                                    },
+                                }} />
+
+
+*/

@@ -73,5 +73,3 @@ function Picture() {
 }
 
 export default Picture;
-
-//{!isLoading ? <img src={data[0].poster_path} alt={data[0].title}></img> : <div>...loading</div>}

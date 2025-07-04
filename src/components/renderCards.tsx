@@ -27,8 +27,8 @@ import { Link } from 'react-router-dom';
 
 //faire en sorte que se soit de manière dynamique en front et mettre jsute une 1s d'attente ou pas
 
-function RenderCards(showClassic: boolean, movie: Movie, userMovie?: UserMovie[]) {
-
+function RenderCards({ showClassic, movie, userMovie }: { showClassic: boolean; movie: Movie; userMovie?: UserMovie[] }) {
+  
   if (showClassic) {
 
     return (

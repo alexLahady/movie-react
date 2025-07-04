@@ -55,7 +55,10 @@ function App() {
         <h2>Trend</h2>
         <div className='app-box'>
           {isLoading ? 'loading.....' : data.map((element) =>
-            RenderCards(true,element)
+            <RenderCards
+              showClassic={true}
+              movie={element}
+            />
           )}
         </div>
         <Link to='/browser' className='main-redirection'>
