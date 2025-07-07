@@ -56,7 +56,7 @@ function App() {
         <div className='app-box'>
           {isLoading ? 'loading.....' : data.map((element) =>
             <RenderCards
-              showClassic={true}
+              showClassic
               movie={element}
             />
           )}

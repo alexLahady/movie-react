@@ -95,7 +95,7 @@ function Library() {
                             {isLoading ? 'Loading....' :
                                 movies.map((element) => (
                                     <RenderCards
-                                        showClassic={true}
+                                        showClassic
                                         movie={element}
                                     />
                                 ))
