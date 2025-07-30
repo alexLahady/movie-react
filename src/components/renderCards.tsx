@@ -37,7 +37,7 @@ function RenderCards({ showClassic, movie, userMovie }: { showClassic: boolean; 
           title={movie.title}
           subheader={formatDate(movie.release_date)}
         />
-        <CardActionArea component={Link} to={`/status?title=${movie.title}`}>
+        <CardActionArea component={Link} to={`/status?title=${movie.title}&poster_path=${movie.poster_path}&overview=${movie.overview}&release_date=${movie.release_date}&vote_average=${movie.vote_average}`}>
           <CardMedia
             component="img"
             height="500"

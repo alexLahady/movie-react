@@ -42,10 +42,10 @@ interface Movie {
 
 function Cookie(connect = false, reqUrl? : string,  methode? :"GET" | "POST" | "PUT" | "DELETE", data? : DataUser | CreateData | Movie | DeleteMovie) {
      const validUrl = reqUrl ?? ""; // verifie si l'url n'est pas null ou undifinied
-    console.log("url reçu "+validUrl);
+    //console.log("url reçu "+validUrl);
     
     if(connect){
-        console.log(`${apiUrl}/pro/pro`);
+        //console.log(`${apiUrl}/pro/pro`);
         return fetch(`${apiUrl}/pro/pro`, {
             method: 'GET',
             headers: {

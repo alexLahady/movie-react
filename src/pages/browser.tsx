@@ -110,11 +110,6 @@ function Browser() {
             return false
         }
 
-        const handleSort = (criteria: 'title' | 'release_date' | 'vote_average') => {
-            setSort(criteria);
-            criteria === 'title' ? setOrder('asc') : setOrder('desc');
-        };
-
         let trueUserId = Number(dataUser[0]); //pour prouver à TS que c'est un number
 
         const handlefavorites = async (element: Movie) => {
@@ -161,13 +156,7 @@ function Browser() {
         return (
             <div className="broswer">
                 <Banner />
-                <h2>list movies</h2>
-                <div className="browser-sort">
-                    <h3>sort</h3>
-                    <button onClick={() => handleSort('title')}>title</button>
-                    <button onClick={() => handleSort('release_date')}>Date</button>
-                    <button onClick={() => handleSort('vote_average')}>Rating</button>
-                </div>
+                <h2>List movies</h2>
                 <div className="browser-movie">
                     {data.slice(indexPage, indexPage + 8).map((element) => (
                         <Card sx={{ maxWidth: 345, mt: '20px', bgcolor: '#212E53', display: 'flex', flexDirection: 'column', }}>

@@ -6,6 +6,8 @@ import '../styles/picture.scss';
 
 //React
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 
 function Picture() {
     //data pour récupéré les images
@@ -52,7 +54,7 @@ function Picture() {
             ]
             : [];
 
-    console.log(visibleImages);
+    //console.log(visibleImages);
 
 
     return (
@@ -62,13 +64,16 @@ function Picture() {
                     <button onClick={handlePrev}>◀</button>
                     <div className="slider-container">
                         {visibleImages.map((element, index) => (
+                            <Link to= {`/status?title=${element.title}&poster_path=${element.poster_path}&overview=${element.overview}&release_date=${element.release_date}&vote_average=${element.vote_average}`}>
                             <img src={element.poster_path} alt={data[index].title} />
+                            </Link>
                         ))}
                     </div>
                     <button onClick={handleNext}>▶</button>
                 </div>
-                : <div>...loading</div>}
-        </div>
+                : <div>...loading</div>
+}
+        </div >
     )
 }
 
