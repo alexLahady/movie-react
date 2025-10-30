@@ -24,7 +24,7 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch(apiUrl, {
+    fetch(`${apiUrl}/api`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -74,5 +74,3 @@ function App() {
 }
 
 export default App;
-
-//plus tart quand l'utilisateur est co mettre les favori

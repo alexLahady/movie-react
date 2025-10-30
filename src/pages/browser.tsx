@@ -7,6 +7,7 @@ import '../styles/brower.scss';
 
 //utils
 import { Movie, UserMovie, apiUrl } from "../utils/type";
+import { CookieUser } from "../utils/type";
 
 //Framework
 //Fontawesome
@@ -36,7 +37,7 @@ function Browser() {
     const [data, setData] = useState<Movie[]>([]);
 
     //User avev  Id et Nom
-    const [dataUser, setDataUser] = useState<(number | string)[]>([]);
+    const [dataUser, setDataUser] = useState<CookieUser>();
 
     //Liste de film de l'utilisateur 
     const [userMovies, setUserMovies] = useState<UserMovie[]>([]);
@@ -56,7 +57,7 @@ function Browser() {
 
     //Affiche tout les films
     useEffect(() => {
-        fetch(apiUrl)
+        fetch(`${apiUrl}/api`)
             .then(response => response.json())
             .then(movie => {
                 //console.log(movie); // Log pour vérifier les données reçues
@@ -76,8 +77,8 @@ function Browser() {
     //Donnée utilisateur de ses films dans l'ordre alphabétique
     useEffect(() => {
         // Vérifier si les données utilisateur sont prêtes
-        if (dataUser.length === 2) {
-            let url = `${apiUrl}/me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
+        if (dataUser?.id) {
+            let url = `${apiUrl}/movies/user/${dataUser?.id}?sort=${sort}&order=${order}`
             Cookie(false, url, 'GET',)
                 .then(allMovie => {
                     setUserMovies(allMovie);
@@ -110,7 +111,7 @@ function Browser() {
             return false
         }
 
-        let trueUserId = Number(dataUser[0]); //pour prouver à TS que c'est un number
+        let trueUserId = Number(dataUser?.id); //pour prouver à TS que c'est un number
 
         const handlefavorites = async (element: Movie) => {
             let foundMovie = userMovies.some((user) => user.title === element.title);
@@ -122,7 +123,7 @@ function Browser() {
                     release_date: element.release_date,
                     vote_average: element.vote_average
                 };
-                let url = `${apiUrl}/me/movies/${dataUser[0]}`;
+                let url = `${apiUrl}/movies/${dataUser?.id}`;
                 await Cookie(false, url, 'POST', newElement);
 
                 await wait(200);
@@ -132,7 +133,7 @@ function Browser() {
             } else {
                 let deleteElement = { userId: trueUserId, title: element.title }
                 console.log(deleteElement);
-                let url = `${apiUrl}/delete/movie`;
+                let url = `${apiUrl}/movies/delete`;
                 await Cookie(false, url, 'DELETE', deleteElement);
 
                 await wait(200);
@@ -221,14 +222,3 @@ function Browser() {
 }
 
 export default Browser;
-
-/*
-//pour le chargement plus tard
-<CircularProgress size={18} sx={{
-                                    '& .MuiCircularProgress-circle': {
-                                        stroke: '#ff1744',
-                                    },
-                                }} />
-
-
-*/

@@ -3,6 +3,7 @@ import Cookie from "./cookie";
 
 //utils
 import { apiUrl } from "../utils/type";
+import { CookieUser } from "../utils/type";
 
 //CSS
 import "../styles/banner.scss";
@@ -15,24 +16,13 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 //React
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
+import { useNavigate } from 'react-router-dom';
+
 
 function Banner() {
-  const [dataUser, setDataUser] = useState<(number | string)[]>([]);
+  const navigate = useNavigate();
+  const [dataUser, setDataUser] = useState<CookieUser>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  //trouver une solution pour deco auto pour ressoudre le problème du serveur qui crash si pas auto deco
-  //console.log(document.cookie);
-  /*
-  const token = document.cookie
-  .split('; ')
-  .find(row => row.startsWith('authtoken='))
-  ?.split('=')[1];
-
-
-   const decoded = jwtDecode(String(token));
-  console.log('toekn 2 = '+decoded);
-  console.log('le token decoder est ='+token);
-  */
 
   useEffect(() => {
     Cookie(true)
@@ -43,16 +33,19 @@ function Banner() {
   }, []);
 
   const logout = async () => {
-    let url = `${apiUrl}/delete/logout`;
-    await Cookie(false, url, 'POST')
-    window.location.reload();
+    let url = `${apiUrl}/auth/logout`;
+    await Cookie(false, url, 'POST');
+    navigate('/user');
+    //window.location.reload();
   }
 
   let navUser;
   let fontAwesome = <FontAwesomeIcon icon={faRightFromBracket} />
 
-  if (dataUser.length <= 2) {
-    navUser = isLoading ? (<li style={{ color: "white" }}>Loading...</li>) : (<li style={{ color: "white" }}>{dataUser[1]} <span onClick={logout}>{fontAwesome}</span></li>)
+  //console.log(dataUser?.id);
+
+  if (dataUser?.id) {
+    navUser = isLoading ? (<li style={{ color: "white" }}>Loading...</li>) : (<li style={{ color: "white" }}>{dataUser?.name} <span onClick={logout}>{fontAwesome}</span></li>)
   } else {
     navUser = <li><Link to="/user">Login/Signup</Link></li>
   }

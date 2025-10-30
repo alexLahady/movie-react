@@ -11,4 +11,13 @@ export interface UserMovie extends Movie {
   userId: number;
 }
 
+
+ export interface CookieUser {
+  id : number,
+  name : string,
+  iat: number,
+  exp: number;
+}
+
+
 export let apiUrl = process.env.REACT_APP_BASE_URL || '';

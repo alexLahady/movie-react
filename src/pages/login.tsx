@@ -69,9 +69,9 @@ function Login() {
             };
             //console.log(loginData);
             setPushButton(false);
-            let url = `${apiUrl}/users/login`
-            const response = await Cookie(false, url, 'POST', loginData)
-
+            let url = `${apiUrl}/auth/login`;
+            const response = await Cookie(false, url, 'POST', loginData);
+            console.log(response);
             if (response !== null) {
                 navigate('/', { replace: true });
             } else {

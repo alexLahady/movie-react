@@ -18,7 +18,7 @@ function Picture() {
     const [startIndex, setStartIndex] = useState(0);
 
     useEffect(() => {
-        fetch(apiUrl, {
+        fetch(`${apiUrl}/api`, {
             method: 'GET',
             credentials: 'include',
             headers: {

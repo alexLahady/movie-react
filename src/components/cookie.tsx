@@ -29,32 +29,19 @@ interface DeleteMovie {
 interface CreateData extends DataUser{
     name : string;
 }
-/*
-interface Movie {
-    title: string;
-    poster_path : string;
-    overview: string;
-    release_date: string;
-    vote_average: number;
-}
-
-*/
 
 function Cookie(connect = false, reqUrl? : string,  methode? :"GET" | "POST" | "PUT" | "DELETE", data? : DataUser | CreateData | Movie | DeleteMovie) {
      const validUrl = reqUrl ?? ""; // verifie si l'url n'est pas null ou undifinied
     //console.log("url reçu "+validUrl);
     
-    if(connect){
+    if(connect) {
         //console.log(`${apiUrl}/pro/pro`);
-        return fetch(`${apiUrl}/pro/pro`, {
+        return fetch(`${apiUrl}/auth/profile`, { // quand l'utilisateur est connecté
             method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
             credentials: 'include'
           }).then(response => response.json())
     } else if(data) {
-        return fetch(validUrl, {
+        return fetch(validUrl, { // quand l'utilisateur va ajouter, supprimer ou regarder sa liste de film
             method: methode,
             credentials: 'include',
             //mode:'cors',
@@ -65,7 +52,7 @@ function Cookie(connect = false, reqUrl? : string,  methode? :"GET" | "POST" | "
             body: JSON.stringify(data),
         });
     } else {
-        return fetch(validUrl, {
+        return fetch(validUrl, { //quand l'utilisateur affcihe l'api ???
             method: methode,
             headers: {
                 'Content-Type': 'application/json',

@@ -8,6 +8,7 @@ import '../styles/library.scss';
 
 //Utils
 import { Movie, apiUrl } from "../utils/type";
+import { CookieUser } from "../utils/type";
 
 //Framework MUI
 import Button from '@mui/material/Button';
@@ -25,7 +26,7 @@ function Library() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     //Date utilisateur id et nom
-    const [dataUser, setDataUser] = useState<(number | string)[]>([]);
+    const [dataUser, setDataUser] = useState<CookieUser>();
 
     //Data des films de l'utilisateur
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -44,8 +45,8 @@ function Library() {
     }, []);
 
     useEffect(() => {
-        if (dataUser.length === 2) {
-            let reqUrl = `${apiUrl}/me/movies/user/${dataUser[0]}?sort=${sort}&order=${order}`
+        if (dataUser?.id) {
+            let reqUrl = `${apiUrl}/movies/user/${dataUser?.id}?sort=${sort}&order=${order}`
             Cookie(false, reqUrl, 'GET',)
                 .then(allMovie => {
                     setMovies(allMovie);
@@ -57,7 +58,7 @@ function Library() {
     // Afficher les films ou autres contenus ici
     //console.log(isLoading);
     //console.log('taille du tableau movie : ' + movies.length);
-    if (dataUser.length > 0 && movies.length === 0) {
+    if (dataUser?.id && movies.length === 0) {
         return (
             <div className="library">
                 <Banner />
@@ -65,7 +66,7 @@ function Library() {
             </div>
         );
     } else {
-        if (!isLoading && dataUser.length > 0) {
+        if (!isLoading && dataUser?.id) {
 
             const handleSort = (criteria: 'title' | 'release_date' | 'vote_average') => {
                 setSort(criteria);
@@ -75,7 +76,7 @@ function Library() {
             return (
                 <div className="library">
                     <Banner />
-                    <h2>Movies list of {dataUser[1]}</h2>
+                    <h2>Movies list of {dataUser?.name}</h2>
                     <div className="library-grid">
                         <div className="library-sort">
                             <FormControl>
