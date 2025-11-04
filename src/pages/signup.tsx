@@ -17,6 +17,7 @@ import Stack from '@mui/material/Stack';
 import { useState, useEffect } from 'react';
 import { Link } from "react-router";
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 interface SignupData {
     email: string;
@@ -24,6 +25,10 @@ interface SignupData {
     password: string;
 }
 
+interface LoginData {
+    email: string;
+    password: string;
+}
 
 function Signup() {
     const navigate = useNavigate();
@@ -38,11 +43,20 @@ function Signup() {
     const [password, setPassword] = useState<string>('');
     const [isPassword, setIsPassword] = useState<boolean>(false);
 
+    //Le bouton si il doit chargé pu pas
     const [pushButton, setPushButton] = useState<boolean>(true);
 
+    //La partie test si le mot de passe est valide et afficher les erreur s'il y en a
+    const [labelError, setLabelError] = useState<string>('Password (min. 8 characters) * ');
+    const [helpTextError, setHelpTextError] = useState<string>('');
+    const [passwordError, setPasswordError] = useState<boolean>(false);
+
+    const [test, setTest] = useState<string>('');
+
+
     useEffect(() => {
-        email.length >= 4 ? setIsEmail(true) : setIsEmail(false);
-        name.length >= 1 ? setIsName(true) : setIsName(false);
+        email.length >= 4 && email.includes('@') ? setIsEmail(true) : setIsEmail(false);
+        name.length >= 2 ? setIsName(true) : setIsName(false);
         password.length >= 8 ? setIsPassword(true) : setIsPassword(false);
 
     }, [email, name, password]);
@@ -61,15 +75,39 @@ function Signup() {
 
             setPushButton(false);
             let url = `${apiUrl}/users/signup`
-            const response = await Cookie(false, url, 'POST', signupData)
+            const response = await Cookie(false, url, 'POST', signupData);
+            const data = await response.json();
+            console.log(data);
 
-            if (response !== null) {
-                navigate('/user', {
-                    replace: true,
-                    state: { fromSignup: true }
-                });
+            if (data.statusCode !== 400) {
+                const loginData: LoginData = {
+                    email: signupData.email,
+                    password: signupData.password,
+                };
+
+                url = `${apiUrl}/auth/login`;
+
+                const resposne$ = await Cookie(false, url, 'POST', loginData);
+                const data2 = await resposne$.json();
+
+                if (data2.statusCode === 200) {
+                    navigate('/', { replace: true });
+                } else {
+                    console.log('Erreur lors de l\'envoi des données');
+                }
+
             } else {
                 // Si la réponse n'est pas OK, affichez un message d'erreur
+                setPushButton(true);
+                setIsPassword(false);
+                setPasswordError(true);
+                
+                setLabelError('error');
+                setTimeout(() => {
+                    setLabelError('Password (min. 8 characters) * ');
+                }, 3000);
+
+                //setHelpTextError(data.message[1].textError);
                 console.log('Erreur lors de l\'envoi des données');
             }
         } else {
@@ -88,7 +126,7 @@ function Signup() {
         Account creation
     </Button>
 
-    let textFieldEmail = !isEmail ? <TextField error type='email' id="standard-error" label="Email required *" variant="standard" value={email} onChange={e => setEmail(e.target.value)} /> :
+    let textFieldEmail = !isEmail ? <TextField error={true}  type='email' id="standard-error" label="Email *"  placeholder="example@example.com" variant="standard" value={email} onChange={e => setEmail(e.target.value)} /> :
         <TextField
             type='email'
             id="standard-basic"
@@ -98,7 +136,7 @@ function Signup() {
             onChange={e => setEmail(e.target.value)}
         />
 
-    let textFieldname = !isName ? <TextField error type='name' id="standard-error" label="Name required *" variant="standard" value={name} onChange={e => setName(e.target.value)} /> :
+    let textFieldname = !isName ? <TextField type='name' id="standard-error" label="Name *" placeholder="Richard" variant="standard" value={name} onChange={e => setName(e.target.value)} /> :
         <TextField
             type='name'
             id="standard-basic"
@@ -109,7 +147,20 @@ function Signup() {
         />
 
 
-    let textFieldpassword = !isPassword ? <TextField error type='password' id="standard-error" label="Password required *" variant="standard" value={password} onChange={e => setPassword(e.target.value)} /> :
+    let textFieldpassword;
+
+    if(passwordError){
+         textFieldpassword = !isPassword ? <TextField error type='password' id="standard-error" label={labelError} variant="standard" value={password} onChange={e => setPassword(e.target.value)} helperText={helpTextError} /> :
+        <TextField 
+            type='password'
+            id="standard-basic"
+            label="OK"
+            variant="standard"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+        />
+    } else {
+         textFieldpassword = !isPassword ?  <TextField type='password' id="standard-error" label={labelError} variant="standard" value={password} onChange={e => setPassword(e.target.value)} helperText={helpTextError} /> :
         <TextField
             type='password'
             id="standard-basic"
@@ -118,7 +169,7 @@ function Signup() {
             value={password}
             onChange={e => setPassword(e.target.value)}
         />
-
+    }
 
     return (
         <div className="signup">
@@ -131,7 +182,7 @@ function Signup() {
                     {textFieldpassword}
                     {sendButton}
                 </Stack>
-                <p>if you have already created an account go to <Link to="/user">login</Link></p>
+                <p className="text-login">if you have already created an account go to <Link to="/user">login</Link></p>
             </div>
 
         </div>
