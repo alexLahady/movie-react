@@ -17,7 +17,7 @@ import Stack from '@mui/material/Stack';
 import { useState, useEffect } from 'react';
 import { Link } from "react-router";
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface SignupData {
     email: string;
@@ -30,18 +30,19 @@ interface LoginData {
     password: string;
 }
 
+
 function Signup() {
     const navigate = useNavigate();
 
     //variable formulaire
     const [email, setEmail] = useState<string>('');
-    const [isEmail, setIsEmail] = useState<boolean>(false);
+    const [isEmail, setIsEmail] = useState<boolean>(true);
 
     const [name, setName] = useState<string>('');
-    const [isName, setIsName] = useState<boolean>(false);
+    const [isName, setIsName] = useState<boolean>(true);
 
     const [password, setPassword] = useState<string>('');
-    const [isPassword, setIsPassword] = useState<boolean>(false);
+    const [isPassword, setIsPassword] = useState<boolean>(true);
 
     //Le bouton si il doit chargé pu pas
     const [pushButton, setPushButton] = useState<boolean>(true);
@@ -51,17 +52,24 @@ function Signup() {
     const [helpTextError, setHelpTextError] = useState<string>('');
     const [passwordError, setPasswordError] = useState<boolean>(false);
 
-    const [test, setTest] = useState<string>('');
+    const { register, handleSubmit, formState: { errors }, } = useForm<SignupData>();//test useFrom
 
 
+    const onSubmit : SubmitHandler<SignupData> = (data) => {
+        console.log(data);
+    }
+
+    /*
     useEffect(() => {
         email.length >= 4 && email.includes('@') ? setIsEmail(true) : setIsEmail(false);
         name.length >= 2 ? setIsName(true) : setIsName(false);
         password.length >= 8 ? setIsPassword(true) : setIsPassword(false);
 
     }, [email, name, password]);
+    */
 
-    const handleSubmit = async () => {
+
+    const sendData = async () => {
         if (isEmail && isName && isPassword) {
             const signupData: SignupData = {
                 email: email,
@@ -101,7 +109,7 @@ function Signup() {
                 setPushButton(true);
                 setIsPassword(false);
                 setPasswordError(true);
-                
+
                 setLabelError('error');
                 setTimeout(() => {
                     setLabelError('Password (min. 8 characters) * ');
@@ -116,9 +124,10 @@ function Signup() {
         }
     }
 
-    let sendButton = pushButton ? <Button onClick={handleSubmit} variant="contained" >
+    let sendButton = pushButton ? <Button type="submit" onClick={sendData} variant="contained" >
         send request
     </Button> : <Button
+        type="submit"
         loading
         loadingPosition="start"
         variant="outlined"
@@ -126,67 +135,75 @@ function Signup() {
         Account creation
     </Button>
 
-    let textFieldEmail = !isEmail ? <TextField error={true}  type='email' id="standard-error" label="Email *"  placeholder="example@example.com" variant="standard" value={email} onChange={e => setEmail(e.target.value)} /> :
-        <TextField
-            type='email'
-            id="standard-basic"
-            label="OK"
-            variant="standard"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-        />
+    let textFieldEmail = <TextField
+       {...register('email', { 
+          required: 'Email is required useForm', 
+          pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email must be valid useFrom' } 
+        })}
+        error={!!errors.email}//s'il se trompe error tout le temps
+        type='email'
+        id="standard-basic"
+        label="Email"
+        variant="standard"
+        value={email}
+        placeholder="example@example.com"
+        helperText={errors.email?.message}
+        onChange={e => setEmail(e.target.value)}
+    />
 
-    let textFieldname = !isName ? <TextField type='name' id="standard-error" label="Name *" placeholder="Richard" variant="standard" value={name} onChange={e => setName(e.target.value)} /> :
-        <TextField
-            type='name'
-            id="standard-basic"
-            label="OK"
-            variant="standard"
-            value={name}
-            onChange={e => setName(e.target.value)}
-        />
+    let textFieldname = <TextField
+       {...register('name', { 
+          required: 'Name is required useForm',
+          minLength: { value: 2, message: 'Name must be at least 2 characters useForm' }
+        })}
+        error={!!errors.name}
+        type='name'
+        id="standard-basic"
+        label="Name"
+        variant="standard"
+        value={name}
+        placeholder="Richard"
+        helperText={errors.name?.message}
+        onChange={e => setName(e.target.value)}
+    />
+
+    let textFieldpassword = <TextField
+        {...register('password', { 
+          required: 'Password is required useForm',
+          minLength: { value: 8, message: 'Password must be at least 8 characters useForm' }
+        })}
+        error={!!errors.password}
+        type='password'
+        id="standard-basic"
+        label={labelError}
+        variant="standard"
+        value={password}
+        helperText={errors.password?.message}
+        onChange={e => setPassword(e.target.value)}
+    />
 
 
-    let textFieldpassword;
 
-    if(passwordError){
-         textFieldpassword = !isPassword ? <TextField error type='password' id="standard-error" label={labelError} variant="standard" value={password} onChange={e => setPassword(e.target.value)} helperText={helpTextError} /> :
-        <TextField 
-            type='password'
-            id="standard-basic"
-            label="OK"
-            variant="standard"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-        />
-    } else {
-         textFieldpassword = !isPassword ?  <TextField type='password' id="standard-error" label={labelError} variant="standard" value={password} onChange={e => setPassword(e.target.value)} helperText={helpTextError} /> :
-        <TextField
-            type='password'
-            id="standard-basic"
-            label="OK"
-            variant="standard"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-        />
-    }
 
     return (
         <div className="signup">
             <Banner />
             <h2>Fill out the registration form</h2>
-            <div className="formulare">
+            <form className="formulare" onSubmit={handleSubmit(onSubmit)}>
                 <Stack direction='column' spacing={2} sx={{ width: '400px', ml: 4 }}>
                     {textFieldEmail}
                     {textFieldname}
                     {textFieldpassword}
                     {sendButton}
                 </Stack>
-                <p className="text-login">if you have already created an account go to <Link to="/user">login</Link></p>
-            </div>
+            </form>
+            <p className="text-login">if you have already created an account go to <Link to="/user">login</Link></p>
 
         </div>
     )
 }
 
 export default Signup; 
+
+
+//set un data qui serait un array et aurait toute les message property et ne sera set que en 400
