@@ -14,9 +14,10 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 
 //React
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router";
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface LoginData {
     email: string;
@@ -24,95 +25,96 @@ interface LoginData {
 }
 
 function Login() {
-    //variable pour changer de page React router v6
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const [serverError, setServerError] = useState<string | null>(null);
 
-    //variable d'email
-    const [email, setEmail] = useState<string>('');
-    const [isEmail, setIsEmail] = useState<boolean>(false);
-
-    //variable mdp
-    const [password, setPassword] = useState<string>('');
-    const [isPassword, setIsPassword] = useState<boolean>(false);
-
-    //temporaire
-    const [message, setMessage] = useState<string>('');
-
-    //temporaire button
-    const [pushButton, setPushButton] = useState<boolean>(true);
-
-    useEffect(() => {
-        email.length >= 4 ? setIsEmail(true) : setIsEmail(false);
-        password.length >= 2 ? setIsPassword(true) : setIsPassword(false);
-
-    }, [email, password]);
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<LoginData>({
+        mode: "onTouched",
+    });
 
     //post
-    const handleSubmit = async () => {
-        //isEmail && isPassword ? setMessage("email and password good") : setMessage("email or password not good");
-        if (isEmail && isPassword) {
-            const loginData: LoginData = {
-                email: email,
-                password: password,
-            };
-            //console.log(loginData);
-            setPushButton(false);
-            let url = `${apiUrl}/auth/login`;
-            const response = await Cookie(false, url, 'POST', loginData);
-            console.log(response);
-            if (response !== null) {
-                navigate('/', { replace: true });
-            } else {
-                // Si la réponse n'est pas OK, affichez un message d'erreur
-                setMessage('Erreur lors de l\'envoi des données');
+    const onSubmit: SubmitHandler<LoginData> = async (data) => {
+        try {
+            setIsLoading(true);
+            setServerError(null);
+
+            const url = `${apiUrl}/auth/login`;
+            const response = await Cookie(false, url, 'POST', data);
+            const result = await response.json();
+            //console.log(result)
+
+            if (result.statusCode === 400) { // on garde pour class-validator
+                if (Array.isArray(result.message)) {
+                    result.message.forEach((err: { property: keyof LoginData; textError: string }) => {
+                        setError(err.property, { type: "server", message: err.textError });
+                    }
+                )} else {
+                    setServerError('Erreur sur les identifiant.');
+                }
+                return;
             }
 
-        } else {
-            setPushButton(true);
-            setMessage("email or password not good");
+
+            if (result.statusCode === 401) {// vrai erreur
+                setServerError('Erreur lors de la connexion.');
+                return;
+            }
+
+            if (result.statusCode === 200) {
+                navigate('/', { replace: true });
+            } else {
+                setServerError('Erreur lors de la connexion.');
+            }
+        } catch (err) {
+            console.error(err);
+            setServerError('Une erreur est survenue. Réessaie plus tard.');
+        } finally {
+            setIsLoading(false);
         }
-    }
+    };
 
-    let sendButton = pushButton ? <Button onClick={handleSubmit} variant="contained" >
-        send request
-    </Button> : <Button
-        loading
-        loadingPosition="start"
-        variant="outlined"
-    >
-        send request
-    </Button>
-
-    let textFieldEmail = !isEmail ? <TextField error type='email' id="standard-error" label="Email required *" variant="standard" value={email} onChange={e => setEmail(e.target.value)} /> :
-        <TextField
-            type='email'
-            id="standard-basic"
-            label="OK"
-            variant="standard"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-        />
-
-    let textFieldpassword = !isPassword ? <TextField error type='password' id="standard-error" label="Password required *" variant="standard" value={password} onChange={e => setPassword(e.target.value)} /> :
-        <TextField
-            type='password'
-            id="standard-basic"
-            label="OK"
-            variant="standard"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-        />
 
     return (
         <div className='login'>
             <Banner />
-            <Stack direction='column' spacing={2} sx={{ width: '400px', ml: 4 }}>
-                {textFieldEmail}
-                {textFieldpassword}
-                {sendButton}
-            </Stack>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Stack direction="column" spacing={2} sx={{ width: '400px', ml: 4 }}>
+                    <TextField
+                        label="Email"
+                        variant="standard"
+                        type="email"
+                        placeholder="example@example.com"
+                        error={!!errors.email}
+                        helperText={errors.email?.message}
+                        {...register("email", {
+                            required: "Email is required",
+                            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Email must be valid" },
+                        })}
+                    />
 
-            <p>{message}</p>
+                    <TextField
+                        label="Password"
+                        variant="standard"
+                        type="password"
+                        placeholder="••••••••"
+                        error={!!errors.password}
+                        helperText={errors.password?.message}
+                        {...register("password", {
+                            required: "Password is required",
+                            minLength: { value: 2, message: "Password must be at least 2 characters" },
+                        })}
+                    />
+
+                    <Button type="submit" variant="contained" disabled={isLoading}>
+                        {isLoading ? "Connecting..." : "Send request"}
+                    </Button>
+
+                    {serverError && (
+                        <p style={{ color: "red", fontSize: "0.9rem" }}>{serverError}</p>
+                    )}
+                </Stack>
+            </form>
             <p>If you don't have an account, go to <Link to="/signup">signup</Link></p>
         </div>
 
