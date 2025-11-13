@@ -7,16 +7,9 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-
-//Framework FontAwesome
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
-import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
-import Cookie from './cookie';
 
 //React 
 import { Link } from 'react-router-dom';

@@ -45,10 +45,6 @@ function Browser() {
     //Un chargement
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    //Variable pour ranger
-    const [sort, setSort] = useState<'title' | 'release_date' | 'vote_average'>('title');
-    const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-
     //valeur de la page
     const [page, setPage] = useState<number>(1);
 
@@ -78,14 +74,14 @@ function Browser() {
     useEffect(() => {
         // Vérifier si les données utilisateur sont prêtes
         if (dataUser?.id) {
-            let url = `${apiUrl}/movies/user/${dataUser?.id}?sort=${sort}&order=${order}`
+            let url = `${apiUrl}/movies/user/${dataUser?.id}?sort=title&order=asc`
             Cookie(false, url, 'GET',)
                 .then(allMovie => {
                     setUserMovies(allMovie);
                 });
         }
         //console.log(userMovies);
-    }, [dataUser, sort, order, refreshKey]);
+    }, [dataUser, refreshKey]);
 
     const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
