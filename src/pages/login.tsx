@@ -42,7 +42,6 @@ function Login() {
             const url = `${apiUrl}/auth/login`;
             const response = await Cookie(false, url, 'POST', data);
             const result = await response.json();
-            //console.log(result)
 
             if (result.statusCode === 400) { // on garde pour class-validator
                 if (Array.isArray(result.message)) {

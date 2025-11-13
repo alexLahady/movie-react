@@ -33,7 +33,6 @@ function App() {
     })
       .then(response => response.json())
       .then(movie => {
-        //console.log(movie); // Log pour vérifier les données reçues
         setData(movie.slice(0, 20));//besoin que des 20 premier
         setIsLoading(false);
       })
