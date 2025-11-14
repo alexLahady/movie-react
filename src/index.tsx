@@ -3,17 +3,14 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.scss';
 import App from './App';
-import Browser from './pages/browser';
-import Library from './pages/library';
-import Login from './pages/login';
-import Signup from './pages/signup';
+import Browser from './components/movies/MovieList';
+import Library from './components/users/UserProfile';
+import Login from './components/auth/loginForm';
+import Signup from './components/auth/RegisterForm';
 import Statut from './pages/statut';
 
 //import reportWebVitals from './reportWebVitals';
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <React.StrictMode>
@@ -23,11 +20,11 @@ root.render(
         <Route path="/me/movies" element={<Library />} />
         <Route path="/user" element={<Login />} />
         <Route path="/browser" element={<Browser />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/status' element={<Statut />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/status" element={<Statut />} />
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
