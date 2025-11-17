@@ -1,4 +1,5 @@
-import { Movie, apiUrl } from '../types';
+import { Movie } from '../types/movies';
+import { apiUrl } from '../types';
 
 //amélioration futur
 

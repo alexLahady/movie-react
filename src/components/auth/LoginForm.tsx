@@ -1,12 +1,14 @@
 //Component
 import Banner from '../banner';
-import Cookie from '../cookie';
 
-//utils
-import { apiUrl } from '../../types/index';
+//Services
+import { indexService } from '../../services';
+
+//types
+import { DataUser } from '../../types/users';
 
 //CSS
-import '../styles/login.scss';
+import '../../styles/login.scss';
 
 //Framework MUI
 import Button from '@mui/material/Button';
@@ -19,10 +21,6 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-interface LoginData {
-  email: string;
-  password: string;
-}
 
 function Login() {
   const navigate = useNavigate();
@@ -34,24 +32,23 @@ function Login() {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<LoginData>({
+  } = useForm<DataUser>({
     mode: 'onTouched',
   });
 
   //post
-  const onSubmit: SubmitHandler<LoginData> = async (data) => {
+  const onSubmit: SubmitHandler<DataUser> = async (data) => {
     try {
       setIsLoading(true);
       setServerError(null);
 
-      const url = `${apiUrl}/auth/login`;
-      const response = await Cookie(false, url, 'POST', data);
+      const response = await indexService.login(data);
       const result = await response.json();
 
       if (result.statusCode === 400) {
         // on garde pour class-validator
         if (Array.isArray(result.message)) {
-          result.message.forEach((err: { property: keyof LoginData; textError: string }) => {
+          result.message.forEach((err: { property: keyof DataUser; textError: string }) => {
             setError(err.property, { type: 'server', message: err.textError });
           });
         } else {

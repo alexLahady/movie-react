@@ -1,11 +1,15 @@
 //Tout les services de pour le Backend
 
-import { authServices } from './auth';
-import { moviesServices } from './movies';
-import { usersServices } from './users';
+import { getCookie } from './auth';
+import { moviesUser, deleteMovieUser, allMovies, addingMovie } from './movies';
+import { createUser, login } from './users';
 
 export const indexService = {
-  authServices,
-  moviesServices,
-  usersServices,
+  getCookie,
+  moviesUser,
+  addingMovie,
+  deleteMovieUser,
+  allMovies,
+  createUser,
+  login,
 };

@@ -1,5 +1,6 @@
 //utils
-import { ApiMovies, apiUrl } from '../types';
+import { ApiMovies } from '../types/movies';
+import { apiUrl } from '../types';
 
 //CSS
 import '../styles/picture.scss';

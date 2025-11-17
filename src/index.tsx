@@ -5,7 +5,7 @@ import './index.scss';
 import App from './App';
 import Browser from './components/movies/MovieList';
 import Library from './components/users/UserProfile';
-import Login from './components/auth/loginForm';
+import Login from './components/auth/LoginForm';
 import Signup from './components/auth/RegisterForm';
 import Statut from './pages/statut';
 

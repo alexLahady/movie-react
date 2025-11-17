@@ -3,7 +3,7 @@ import Cookie from './cookie';
 
 //utils
 import { apiUrl } from '../types';
-import { CookieUser } from '../types';
+import { CookieUser } from '../types/auth';
 
 //CSS
 import '../styles/banner.scss';

@@ -1,8 +1,9 @@
+import { apiUrl } from '../types';
 import { Movie, DeleteMovie } from '../types/movies';
 
 // Récupère la liste des film populaire par l'Api externe
-const getMovies = (url: string) => {
-  return fetch(url, {
+export const allMovies = () => {
+  return fetch(`${apiUrl}/api`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -12,8 +13,8 @@ const getMovies = (url: string) => {
 };
 
 //Ajoute en favorie le film de l'utilisateur
-const postMoviesUser = (url: string, data: Movie) => {
-  return fetch(url, {
+export const addingMovie = (userId: number, data: Movie) => {
+  return fetch(`${apiUrl}/movies/${userId}`, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
@@ -24,9 +25,24 @@ const postMoviesUser = (url: string, data: Movie) => {
   });
 };
 
+export const moviesUser = (
+  userId: number,
+  sort: 'title' | 'release_date' | 'vote_average' = 'title',
+  order: 'asc' | 'desc' = 'asc',
+) => {
+  return fetch(`${apiUrl}/movies/user/${userId}?sort=${sort}&order=${order}`, {
+    method: 'GET',
+    credentials: 'include',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((response) => response.json());
+};
+
 //Supprime le film favori de l'utilisateur
-const deleteMoviesUser = (url: string, data: DeleteMovie) => {
-  return fetch(url, {
+export const deleteMovieUser = (data: DeleteMovie) => {
+  return fetch(`${apiUrl}/movies/delete`, {
     method: 'DELETE',
     credentials: 'include',
     mode: 'cors',
@@ -35,10 +51,4 @@ const deleteMoviesUser = (url: string, data: DeleteMovie) => {
     },
     body: JSON.stringify(data),
   });
-};
-
-export const moviesServices = {
-  getMovies: (url: string) => getMovies(url),
-  postMoviesUser: (url: string, dataMovie: Movie) => postMoviesUser(url, dataMovie),
-  deleteMoviesUser: (url: string, dataDelete: DeleteMovie) => deleteMoviesUser(url, dataDelete),
 };

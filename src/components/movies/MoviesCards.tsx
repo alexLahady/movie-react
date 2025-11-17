@@ -1,6 +1,6 @@
 //utils
 import { Movie, UserMovie } from '../../types/movies';
-import { formatDate } from '../../utils/formatDate';
+import { formatDate } from '../../utils/formatters';
 
 //Framework MUI
 import Card from '@mui/material/Card';

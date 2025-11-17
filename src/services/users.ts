@@ -1,8 +1,9 @@
+import { apiUrl } from '../types';
 import { DataUser, CreateData } from '../types/users';
 
 //Connection de l'utilisateur
-const postUser = (url: string, dataUser: DataUser) => {
-  return fetch(url, {
+export const login = ( dataUser: DataUser) => {
+  return fetch(`${apiUrl}/auth/login`, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
@@ -14,19 +15,14 @@ const postUser = (url: string, dataUser: DataUser) => {
 };
 
 //Creation de l'utilisateur
-const postCreateUser = (url: string, createUser: CreateData) => {
-  return fetch(url, {
+export const createUser = (dataUser: CreateData) => {
+  return fetch(`${apiUrl}/users/signup`, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(createUser),
+    body: JSON.stringify(dataUser),
   });
-};
-
-export const usersServices = {
-  postUser: (url: string, dataUser: DataUser) => postUser(url, dataUser),
-  postCreateUser: (url: string, createUser: CreateData) => postCreateUser(url, createUser),
 };

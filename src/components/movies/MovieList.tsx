@@ -1,16 +1,19 @@
 //Component
 import Banner from '../banner';
-import Cookie from '../cookie';
+
+//Services
+import { indexService } from '../../services';
 
 //CSS
-import '../styles/brower.scss';
+import '../../styles/brower.scss';
+
+//type
+import { PageData } from '../../types';
 
 //utils
-import { apiUrl } from '../../types/index';
-import { ApiMovies, UserMovie } from '../../types/movies';
-import { CookieUser } from '../../types/auth';
+import { formatDate } from '../../utils/formatters';
 
-//Framework
+/***Framework***/
 //Fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
@@ -28,82 +31,47 @@ import Stack from '@mui/material/Stack';
 //import CircularProgress from '@mui/material/CircularProgress';
 
 //React
-import { useState, useEffect, useMemo } from 'react';
+import { useState } from 'react';
+import useSWR, { mutate } from 'swr';
 
 function Browser() {
-  //refresh
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  //Liste de l'api
-  const [data, setData] = useState<ApiMovies[]>([]);
-
-  //User avev  Id et Nom
-  const [dataUser, setDataUser] = useState<CookieUser>();
-
-  //Liste de film de l'utilisateur
-  const [userMovies, setUserMovies] = useState<UserMovie[]>([]);
-
-  //Un chargement
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   //valeur de la page
   const [page, setPage] = useState<number>(1);
 
-  //valeur du tableau en fonction de la page(pour changer de page)
-  //const [indexPage, setIndexPage] = useState<number>(0);
+  //useSWR qui gère la récuparation de tout les film, la connection et si connecté les favoris de l'utilisateur
+  const { data, isLoading } = useSWR<PageData>('pageData', async () => {
+    //PageData regroupe 3 type l'ApiMovies, CookiesUser et Usermovie
+    const movies = await indexService.allMovies(); // tous les films
+    const user = await indexService.getCookie(); //connecté ou pas
 
-  //Affiche tout les films
-  useEffect(() => {
-    fetch(`${apiUrl}/api`)
-      .then((response) => response.json())
-      .then((movie) => {
-        //console.log(movie); // Log pour vérifier les données reçues
-        setData(movie);
-        setIsLoading(false);
-      });
-  }, []);
-
-  //Donnée utilisateur sécurisé
-  useEffect(() => {
-    Cookie(true).then((response) => {
-      setDataUser(response);
-    });
-  }, []);
-
-  //Donnée utilisateur de ses films dans l'ordre alphabétique
-  useEffect(() => {
-    // Vérifier si les données utilisateur sont prêtes
-    if (dataUser?.id) {
-      const url = `${apiUrl}/movies/user/${dataUser?.id}?sort=title&order=asc`;
-      Cookie(false, url, 'GET').then((allMovie) => {
-        setUserMovies(allMovie);
-      });
+    let userMovies = [];
+    if (user?.id) {
+      // si connecté
+      userMovies = await indexService.moviesUser(user.id); //liste des favoris de l'utilisateur
     }
-    //console.log(userMovies);
-  }, [dataUser, refreshKey]);
 
-  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    return {
+      //data 3 valeurs userMovies peut-être vide
+      movies,
+      user,
+      userMovies,
+    };
+  });
 
-  //pour avoir la valeur de la page
-  /*
-  useEffect(() => {
-    console.log(page);
-    const truePage = page - 1;
-    setIndexPage(truePage * 8);
+  if (isLoading) return <p>Loading...</p>;
+  if (!data) return <p>Error</p>;
 
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }, [page, indexPage]);
-*/
+  const movies = data.movies;
+  const user = data.user;
+  const userMovies = data.userMovies;
 
-  const indexPage = useMemo(() => {
-    return (page - 1) * 8;
-  }, [page]);
+  //Pagination
+  const indexPage = (page - 1) * 8;
+
+  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms)); //une petite attente après l'ajout d'un favori ou supprimer un favori
 
   if (!isLoading) {
-    const favorite = (element: ApiMovies) => {
+    const favorite = (element: PageData['movies'][0]) => {
       const foundMovie = userMovies.some((user) => user.title === element.title);
       if (foundMovie) {
         return true;
@@ -111,9 +79,7 @@ function Browser() {
       return false;
     };
 
-    const trueUserId = Number(dataUser?.id); //pour prouver à TS que c'est un number
-
-    const handlefavorites = async (element: ApiMovies) => {
+    const handlefavorites = async (element: PageData['movies'][0]) => {
       console.log('je suis dedans');
       const foundMovie = userMovies.some((user) => user.title === element.title);
       if (!foundMovie) {
@@ -124,35 +90,29 @@ function Browser() {
           release_date: element.release_date,
           vote_average: element.vote_average,
         };
-        const url = `${apiUrl}/movies/${trueUserId}`;
-        await Cookie(false, url, 'POST', newElement);
+
+        await indexService.addingMovie(user.id, newElement);
 
         await wait(200);
         //window.location.reload();
-        setRefreshKey((prev) => prev + 1);
+        mutate('pageData'); //refetch le fetcher et met à jour `pageData` qui est en cache après modification
       } else {
-        const deleteElement = { userId: trueUserId, title: element.title };
-        console.log(deleteElement);
-        const url = `${apiUrl}/movies/delete`;
-        await Cookie(false, url, 'DELETE', deleteElement);
+        const deleteElement = { userId: user.id, title: element.title };
+        //console.log(deleteElement);
+        await indexService.deleteMovieUser(deleteElement);
 
         await wait(200);
         //window.location.reload();
-        setRefreshKey((prev) => prev + 1);
+        mutate('pageData'); //refetch le fetcher et met à jour `pageData` qui est en cache après modification
       }
-    };
-
-    const formatDate = (dateString: string) => {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US');
     };
 
     //Pour savoir si l'utilisateur est pas connecté
     //Test pour savoir si sa renvoit une erreur et revoyer vrai si c'est le cas
     const isNotConnected =
-      !dataUser ||
-      (Array.isArray(dataUser) && dataUser.length === 0) ||
-      (typeof dataUser === 'object' && 'error' in dataUser);
+      !user ||
+      (Array.isArray(user) && user.length === 0) ||
+      (typeof user === 'object' && 'error' in user);
 
     //console.log('datauser valeur est de ' + isNotConnected);
 
@@ -161,7 +121,7 @@ function Browser() {
         <Banner />
         <h2>List movies</h2>
         <div className="browser-movie">
-          {data.slice(indexPage, indexPage + 8).map((element, index) => (
+          {movies.slice(indexPage, indexPage + 8).map((element, index) => (
             <Card
               key={`${element.id}-${index}`}
               sx={{

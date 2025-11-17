@@ -4,7 +4,7 @@ import Cookie from '../cookie';
 import RenderCards from '../movies/MoviesCards';
 
 //CSS
-import '../styles/library.scss';
+import '../../styles/library.scss';
 
 //Utils
 import { apiUrl } from '../../types/index';

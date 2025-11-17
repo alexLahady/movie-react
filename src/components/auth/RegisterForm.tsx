@@ -1,12 +1,14 @@
 //Component
 import Banner from '../banner';
-import Cookie from '../cookie';
 
-//utils
-import { apiUrl } from '../../types/index';
+//Services
+import { indexService } from '../../services';
+
+//types 
+import { DataUser, CreateData } from '../../types/users';
 
 //CSS
-import '../styles/signup.scss';
+import '../../styles/signup.scss';
 
 //Framework MUI
 import Button from '@mui/material/Button';
@@ -19,17 +21,6 @@ import { Link } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-interface SignupData {
-  email: string;
-  name: string;
-  password: string;
-}
-
-interface LoginData {
-  email: string;
-  password: string;
-}
-
 function Signup() {
   const navigate = useNavigate();
 
@@ -41,22 +32,22 @@ function Signup() {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<SignupData>({
+  } = useForm<CreateData>({
     mode: 'onTouched',
   });
   //test useFrom
 
-  const onSubmit: SubmitHandler<SignupData> = async (data) => {
+  const onSubmit: SubmitHandler<CreateData> = async (data) => {
     try {
       setIsLoading(true);
       setServerError(null);
 
-      const response = await Cookie(false, `${apiUrl}/users/signup`, 'POST', data);
+      const response = await indexService.createUser(data);
       const result = await response.json();
 
       if (result.statusCode === 400) {
         if (Array.isArray(result.message)) {
-          result.message.forEach((err: { property: keyof SignupData; textError: string }) => {
+          result.message.forEach((err: { property: keyof CreateData; textError: string }) => {
             setError(err.property, { type: 'server', message: err.textError });
           });
         } else {
@@ -66,8 +57,8 @@ function Signup() {
       }
 
       // login automatique
-      const loginData: LoginData = { email: data.email, password: data.password };
-      const responseLogin = await Cookie(false, `${apiUrl}/auth/login`, 'POST', loginData);
+      const loginData: DataUser = { email: data.email, password: data.password };
+      const responseLogin = await indexService.login(loginData);
       const resultLogin = await responseLogin.json();
 
       if (resultLogin.statusCode === 200) {
