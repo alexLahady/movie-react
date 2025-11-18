@@ -2,7 +2,7 @@
 import Banner from '../banner';
 
 //Services
-import { indexService } from '../../services';
+import { login } from '../../services';
 
 //types
 import { DataUser } from '../../types/users';
@@ -20,7 +20,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
 
 function Login() {
   const navigate = useNavigate();
@@ -42,7 +41,7 @@ function Login() {
       setIsLoading(true);
       setServerError(null);
 
-      const response = await indexService.login(data);
+      const response = await login(data);
       const result = await response.json();
 
       if (result.statusCode === 400) {

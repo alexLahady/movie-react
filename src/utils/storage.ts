@@ -1,3 +1,1 @@
-export function storage () {
-    
-}
+export function storage() {}

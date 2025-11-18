@@ -1,8 +1,7 @@
-//Component
-import Cookie from './cookie';
+//Services
+import { getCookie, logout } from '../services';
 
-//utils
-import { apiUrl } from '../types';
+//type
 import { CookieUser } from '../types/auth';
 
 //CSS
@@ -24,15 +23,14 @@ function Banner() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    Cookie(true).then((response) => {
-      setDataUser(response);
+    getCookie().then(user => {
+      setDataUser(user);
       setIsLoading(false);
     });
   }, []);
 
-  const logout = async () => {
-    const url = `${apiUrl}/auth/logout`;
-    await Cookie(false, url, 'POST');
+  const bannerLogout = async () => {
+    await logout();
     navigate('/user');
     //window.location.reload();
   };
@@ -47,7 +45,7 @@ function Banner() {
       <li style={{ color: 'white' }}>Loading...</li>
     ) : (
       <li style={{ color: 'white' }}>
-        {dataUser?.name} <span onClick={logout}>{fontAwesome}</span>
+        {dataUser?.name} <span onClick={bannerLogout}>{fontAwesome}</span>
       </li>
     );
   } else {

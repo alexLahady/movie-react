@@ -2,9 +2,9 @@
 import Banner from '../banner';
 
 //Services
-import { indexService } from '../../services';
+import { createUser, login } from '../../services';
 
-//types 
+//types
 import { DataUser, CreateData } from '../../types/users';
 
 //CSS
@@ -42,7 +42,7 @@ function Signup() {
       setIsLoading(true);
       setServerError(null);
 
-      const response = await indexService.createUser(data);
+      const response = await createUser(data);
       const result = await response.json();
 
       if (result.statusCode === 400) {
@@ -58,7 +58,7 @@ function Signup() {
 
       // login automatique
       const loginData: DataUser = { email: data.email, password: data.password };
-      const responseLogin = await indexService.login(loginData);
+      const responseLogin = await login(loginData);
       const resultLogin = await responseLogin.json();
 
       if (resultLogin.statusCode === 200) {

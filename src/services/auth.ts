@@ -7,3 +7,10 @@ export const getCookie = () => {
     credentials: 'include',
   }).then((response) => response.json());
 };
+
+export const logout = () => {
+  return fetch(`${apiUrl}/auth/logout`, {
+    method: 'POST',
+    credentials: 'include',
+  }).then((response) => response.json());
+};

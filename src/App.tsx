@@ -20,7 +20,7 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 //React
 import { Link } from 'react-router-dom';
 //import { useState, useEffect } from 'react';
-import useSWR from 'swr'
+import useSWR from 'swr';
 
 const fetcher = () => indexService.allMovies();
 

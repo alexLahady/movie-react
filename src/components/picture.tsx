@@ -1,6 +1,8 @@
-//utils
+//Services
+import { allMovies } from '../services';
+
+//type
 import { ApiMovies } from '../types/movies';
-import { apiUrl } from '../types';
 
 //CSS
 import '../styles/picture.scss';
@@ -18,14 +20,7 @@ function Picture() {
   const [startIndex, setStartIndex] = useState(0);
 
   useEffect(() => {
-    fetch(`${apiUrl}/api`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
+    allMovies()
       .then((movie) => {
         //console.log(movie); // Log pour vérifier les données reçues
         setData(movie.slice(0, 6));

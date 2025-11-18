@@ -2,7 +2,7 @@
 import Banner from '../banner';
 
 //Services
-import { indexService } from '../../services';
+import { allMovies, getCookie, moviesUser, deleteMovieUser, addingMovie } from '../../services';
 
 //CSS
 import '../../styles/brower.scss';
@@ -41,13 +41,13 @@ function Browser() {
   //useSWR qui gère la récuparation de tout les film, la connection et si connecté les favoris de l'utilisateur
   const { data, isLoading } = useSWR<PageData>('pageData', async () => {
     //PageData regroupe 3 type l'ApiMovies, CookiesUser et Usermovie
-    const movies = await indexService.allMovies(); // tous les films
-    const user = await indexService.getCookie(); //connecté ou pas
+    const movies = await allMovies(); // tous les films
+    const user = await getCookie(); //connecté ou pas
 
     let userMovies = [];
     if (user?.id) {
       // si connecté
-      userMovies = await indexService.moviesUser(user.id); //liste des favoris de l'utilisateur
+      userMovies = await moviesUser(user.id); //liste des favoris de l'utilisateur
     }
 
     return {
@@ -91,7 +91,7 @@ function Browser() {
           vote_average: element.vote_average,
         };
 
-        await indexService.addingMovie(user.id, newElement);
+        await addingMovie(user.id, newElement);
 
         await wait(200);
         //window.location.reload();
@@ -99,7 +99,7 @@ function Browser() {
       } else {
         const deleteElement = { userId: user.id, title: element.title };
         //console.log(deleteElement);
-        await indexService.deleteMovieUser(deleteElement);
+        await deleteMovieUser(deleteElement);
 
         await wait(200);
         //window.location.reload();

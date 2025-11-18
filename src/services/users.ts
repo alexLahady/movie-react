@@ -2,7 +2,7 @@ import { apiUrl } from '../types';
 import { DataUser, CreateData } from '../types/users';
 
 //Connection de l'utilisateur
-export const login = ( dataUser: DataUser) => {
+export const login = (dataUser: DataUser) => {
   return fetch(`${apiUrl}/auth/login`, {
     method: 'POST',
     credentials: 'include',

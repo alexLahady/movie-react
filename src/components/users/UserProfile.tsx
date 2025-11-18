@@ -1,15 +1,15 @@
 //Component
 import Banner from '../banner';
-import Cookie from '../cookie';
 import RenderCards from '../movies/MoviesCards';
 
 //CSS
 import '../../styles/library.scss';
 
-//Utils
-import { apiUrl } from '../../types/index';
-import { Movie } from '../../types/movies';
-import { CookieUser } from '../../types/auth';
+//services
+import { getCookie, moviesUser } from '../../services';
+
+//type
+import { PageDataUsers } from '../../types/index';
 
 //Framework MUI
 import Button from '@mui/material/Button';
@@ -21,21 +21,15 @@ import FormLabel from '@mui/material/FormLabel';
 
 //React
 import { useState, useEffect } from 'react';
+import useSWR from 'swr';
 import { Link } from 'react-router-dom';
 
 function Library() {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  //Date utilisateur id et nom
-  const [dataUser, setDataUser] = useState<CookieUser>();
-
-  //Data des films de l'utilisateur
-  const [movies, setMovies] = useState<Movie[]>([]);
-
   //Parametre pour ranger les films
   const [sort, setSort] = useState<'title' | 'release_date' | 'vote_average'>('title');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
+  /*
   useEffect(() => {
     // Vérifier si les données utilisateur sont prêtes
     Cookie(true).then((response) => {
@@ -53,11 +47,35 @@ function Library() {
       });
     }
   }, [dataUser, sort, order]);
+  */
+
+  const { data , isLoading } = useSWR<PageDataUsers>('pageDataUser' , async () => {
+    const user = await getCookie();
+    
+    let userMovies = [];
+    if(user?.id){
+      userMovies = await moviesUser(user.id, sort, order);
+    }
+
+    return {
+      user,
+      userMovies,
+    };
+  })
+
+  if (isLoading) return <p>Loading...</p>;
+  if (!data) return <p>Error</p>;
+
+  const user = data.user;
+  const userMovies = data.userMovies;
+ 
+
+
 
   // Afficher les films ou autres contenus ici
   //console.log(isLoading);
   //console.log('taille du tableau movie : ' + movies.length);
-  if (dataUser?.id && movies.length === 0) {
+  if (user.id && userMovies.length === 0) {
     return (
       <div className="library">
         <Banner />
@@ -70,7 +88,7 @@ function Library() {
       </div>
     );
   } else {
-    if (!isLoading && dataUser?.id) {
+    if (!isLoading && user.id) {
       const handleSort = (criteria: 'title' | 'release_date' | 'vote_average') => {
         setSort(criteria);
         const orderValue = criteria === 'title' ? 'asc' : 'desc';
@@ -80,7 +98,7 @@ function Library() {
       return (
         <div className="library">
           <Banner />
-          <h2>Movies list of {dataUser?.name}</h2>
+          <h2>Movies list of {user.name}</h2>
           <div className="library-grid">
             <div className="library-sort">
               <FormControl>
@@ -114,7 +132,7 @@ function Library() {
             <div className="library-movie">
               {isLoading
                 ? 'Loading....'
-                : movies.map((element, index) => (
+                : userMovies.map((element, index) => (
                     <RenderCards key={index} showClassic movie={element} />
                   ))}
             </div>
