@@ -12,5 +12,5 @@ export interface PageDataUsers {
 }
 
 export interface PageData extends PageDataUsers {
-   movies: ApiMovies[];
+  movies: ApiMovies[];
 }

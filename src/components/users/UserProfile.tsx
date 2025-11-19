@@ -20,7 +20,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
 //React
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useSWR from 'swr';
 import { Link } from 'react-router-dom';
 
@@ -29,31 +29,11 @@ function Library() {
   const [sort, setSort] = useState<'title' | 'release_date' | 'vote_average'>('title');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
-  /*
-  useEffect(() => {
-    // Vérifier si les données utilisateur sont prêtes
-    Cookie(true).then((response) => {
-      setDataUser(response);
-      setIsLoading(false);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (dataUser?.id) {
-      const reqUrl = `${apiUrl}/movies/user/${dataUser?.id}?sort=${sort}&order=${order}`;
-      Cookie(false, reqUrl, 'GET').then((allMovie) => {
-        setMovies(allMovie);
-        setIsLoading(false);
-      });
-    }
-  }, [dataUser, sort, order]);
-  */
-
-  const { data , isLoading } = useSWR<PageDataUsers>('pageDataUser' , async () => {
+  const { data, isLoading } = useSWR<PageDataUsers>('pageDataUser', async () => {
     const user = await getCookie();
-    
+
     let userMovies = [];
-    if(user?.id){
+    if (user?.id) {
       userMovies = await moviesUser(user.id, sort, order);
     }
 
@@ -61,16 +41,13 @@ function Library() {
       user,
       userMovies,
     };
-  })
+  });
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>Error</p>;
 
   const user = data.user;
   const userMovies = data.userMovies;
- 
-
-
 
   // Afficher les films ou autres contenus ici
   //console.log(isLoading);

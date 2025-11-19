@@ -23,7 +23,7 @@ function Banner() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getCookie().then(user => {
+    getCookie().then((user) => {
       setDataUser(user);
       setIsLoading(false);
     });
