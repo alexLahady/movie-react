@@ -8,6 +8,7 @@ import Library from './components/users/UserProfile';
 import Login from './components/auth/LoginForm';
 import Signup from './components/auth/RegisterForm';
 import Statut from './pages/statut';
+import { AuthProvider } from './components/auth/authContext';
 
 //import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -15,14 +16,16 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/me/movies" element={<Library />} />
-        <Route path="/user" element={<Login />} />
-        <Route path="/browser" element={<Browser />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/status" element={<Statut />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/me/movies" element={<Library />} />
+          <Route path="/user" element={<Login />} />
+          <Route path="/browser" element={<Browser />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/status" element={<Statut />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

@@ -1,8 +1,11 @@
+//auth
+import { useAuth } from '../auth/authContext';
+
 //Component
 import Banner from '../banner';
 
 //Services
-import { allMovies, getCookie, moviesUser, deleteMovieUser, addingMovie } from '../../services';
+import { allMovies, moviesUser, deleteMovieUser, addingMovie } from '../../services';
 
 //CSS
 import '../../styles/brower.scss';
@@ -28,7 +31,6 @@ import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-//import CircularProgress from '@mui/material/CircularProgress';
 
 //React
 import { useState } from 'react';
@@ -37,12 +39,13 @@ import useSWR, { mutate } from 'swr';
 function Browser() {
   //valeur de la page
   const [page, setPage] = useState<number>(1);
+  //auth
+  const { user } = useAuth();
 
   //useSWR qui gère la récuparation de tout les film, la connection et si connecté les favoris de l'utilisateur
   const { data, isLoading } = useSWR<PageData>('pageData', async () => {
-    //PageData regroupe 3 type l'ApiMovies, CookiesUser et Usermovie
+    //PageData regroupe 2 type l'ApiMovies et Usermovie
     const movies = await allMovies(); // tous les films
-    const user = await getCookie(); //connecté ou pas
 
     let userMovies = [];
     if (user?.id) {
@@ -51,9 +54,8 @@ function Browser() {
     }
 
     return {
-      //data 3 valeurs userMovies peut-être vide
+      //data 2 valeurs userMovies peut-être vide
       movies,
-      user,
       userMovies,
     };
   });
@@ -62,7 +64,6 @@ function Browser() {
   if (!data) return <p>Error</p>;
 
   const movies = data.movies;
-  const user = data.user;
   const userMovies = data.userMovies;
 
   //Pagination
@@ -91,13 +92,13 @@ function Browser() {
           vote_average: element.vote_average,
         };
 
-        await addingMovie(user.id, newElement);
+        await addingMovie(user!.id, newElement);
 
         await wait(200);
         //window.location.reload();
         mutate('pageData'); //refetch le fetcher et met à jour `pageData` qui est en cache après modification
       } else {
-        const deleteElement = { userId: user.id, title: element.title };
+        const deleteElement = { userId: user!.id, title: element.title };
         //console.log(deleteElement);
         await deleteMovieUser(deleteElement);
 
@@ -113,8 +114,6 @@ function Browser() {
       !user ||
       (Array.isArray(user) && user.length === 0) ||
       (typeof user === 'object' && 'error' in user);
-
-    //console.log('datauser valeur est de ' + isNotConnected);
 
     return (
       <div className="broswer">

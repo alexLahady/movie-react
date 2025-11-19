@@ -1,8 +1,11 @@
+//auth
+import { useAuth } from './authContext';
+
 //Component
 import Banner from '../banner';
 
 //Services
-import { login } from '../../services';
+import { login, getCookie } from '../../services';
 
 //types
 import { DataUser } from '../../types/users';
@@ -25,6 +28,9 @@ function Login() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+
+  //Refresh l'auto-login
+  const { setUser } = useAuth();
 
   const {
     register,
@@ -63,6 +69,9 @@ function Login() {
       }
 
       if (result.statusCode === 200) {
+        const userData = await getCookie();
+        setUser(userData);
+
         navigate('/', { replace: true });
       } else {
         setServerError('Erreur lors de la connexion.');

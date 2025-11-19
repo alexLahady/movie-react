@@ -1,3 +1,5 @@
+import { useAuth } from '../auth/authContext';
+
 //Component
 import Banner from '../banner';
 import RenderCards from '../movies/MoviesCards';
@@ -6,7 +8,7 @@ import RenderCards from '../movies/MoviesCards';
 import '../../styles/library.scss';
 
 //services
-import { getCookie, moviesUser } from '../../services';
+import { moviesUser } from '../../services';
 
 //type
 import { PageDataUsers } from '../../types/index';
@@ -29,30 +31,45 @@ function Library() {
   const [sort, setSort] = useState<'title' | 'release_date' | 'vote_average'>('title');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
-  const { data, isLoading } = useSWR<PageDataUsers>('pageDataUser', async () => {
-    const user = await getCookie();
+  const { user } = useAuth();
 
-    let userMovies = [];
-    if (user?.id) {
-      userMovies = await moviesUser(user.id, sort, order);
-    }
+  const { data, isLoading } = useSWR<PageDataUsers>(
+    user ? ['movieListUser', user.id, sort, order] : null, //pour avoir la valeur de sort et order au moment du refresh
+    async () => {
+      let userMovies = [];
+      if (user?.id) {
+        userMovies = await moviesUser(user.id, sort, order);
+      }
 
-    return {
-      user,
-      userMovies,
-    };
-  });
+      return {
+        userMovies,
+      };
+    },
+    {
+      keepPreviousData: true, //garde l'ancienne liste visible
+      revalidateOnFocus: false, // pas de refetch inutile
+    },
+  );
 
   if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>Error</p>;
+  if (!data) {
+    return (
+      <div>
+        <Banner />
+        <div className="library-connect">
+          You are not connection got to<br></br>
+          <Link to={'/user'}>
+            <Button variant="contained">login</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
-  const user = data.user;
   const userMovies = data.userMovies;
 
   // Afficher les films ou autres contenus ici
-  //console.log(isLoading);
-  //console.log('taille du tableau movie : ' + movies.length);
-  if (user.id && userMovies.length === 0) {
+  if (userMovies.length === 0) {
     return (
       <div className="library">
         <Banner />
@@ -65,7 +82,6 @@ function Library() {
       </div>
     );
   } else {
-    if (!isLoading && user.id) {
       const handleSort = (criteria: 'title' | 'release_date' | 'vote_average') => {
         setSort(criteria);
         const orderValue = criteria === 'title' ? 'asc' : 'desc';
@@ -75,7 +91,7 @@ function Library() {
       return (
         <div className="library">
           <Banner />
-          <h2>Movies list of {user.name}</h2>
+          <h2>Movies list of {user?.name}</h2>
           <div className="library-grid">
             <div className="library-sort">
               <FormControl>
@@ -116,19 +132,6 @@ function Library() {
           </div>
         </div>
       );
-    } else {
-      return (
-        <div>
-          <Banner />
-          <div className="library-connect">
-            You are not connection got to<br></br>
-            <Link to={'/user'}>
-              <Button variant="contained">login</Button>
-            </Link>
-          </div>
-        </div>
-      );
-    }
   }
 }
 

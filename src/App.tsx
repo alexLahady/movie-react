@@ -4,7 +4,7 @@ import Picture from './components/picture';
 import RenderCards from './components/movies/MoviesCards';
 
 //Services
-import { indexService } from './services';
+import { allMovies } from './services';
 
 //CSS
 import './App.scss';
@@ -22,7 +22,7 @@ import { Link } from 'react-router-dom';
 //import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 
-const fetcher = () => indexService.allMovies();
+const fetcher = () => allMovies();
 
 function App() {
   //100 datas de l'API de MovieDB

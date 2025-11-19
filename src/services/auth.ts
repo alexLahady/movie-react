@@ -1,4 +1,7 @@
 import { apiUrl } from '../types';
+//import { useAuth } from '../components/auth/authContext';
+
+//const { setUser } = useAuth();
 
 // Savoir si l'utilisateur est connecté
 export const getCookie = () => {
