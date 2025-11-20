@@ -21,7 +21,7 @@ function Picture() {
   const { data, error, isLoading } = useSWR<ApiMovies[]>('allMovies', fetcher);
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error Data</p>;
-  let movie = data?.slice(0, 6) || [];
+  const movie = data?.slice(0, 6) || [];
 
   const handlePrev = () => {
     setStartIndex((prev) => (prev - 1 + movie.length) % movie.length);

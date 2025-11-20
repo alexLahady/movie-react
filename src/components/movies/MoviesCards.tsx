@@ -1,5 +1,5 @@
 //utils
-import { Movie, UserMovie } from '../../types/movies';
+import { Movie } from '../../types/movies';
 import { formatDate } from '../../utils/formatters';
 
 //Framework MUI

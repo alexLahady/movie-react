@@ -41,11 +41,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       await logoutService(); // appelle la route logout côté backend
     } finally {
       setUser(null); // supprime le user localement
-      navigate('/user')
+      navigate('/user');
     }
   };
 
-  return <AuthContext.Provider value={{ user, setUser, loading, logout }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {

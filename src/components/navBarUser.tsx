@@ -11,19 +11,19 @@ function NavBarUser() {
   if (loading) {
     navUser = <li style={{ color: 'white' }}>Loading...</li>;
   } else if (user?.id) {
-     navUser = (
+    navUser = (
       <li style={{ color: 'white' }}>
         {user.name} <span onClick={logout}>{fontAwesome}</span>
       </li>
     );
   } else {
-     navUser = (
+    navUser = (
       <li>
         <Link to="/user">Login/Signup</Link>
       </li>
     );
   }
- return navUser;
+  return navUser;
 }
 
 export default NavBarUser;

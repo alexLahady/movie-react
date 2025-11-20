@@ -32,7 +32,7 @@ function Login() {
   //Refresh l'auto-login
   const { user, setUser } = useAuth();
 
-  if(!user === null){
+  if (user !== null) {
     navigate('/', { replace: true });
   }
 
@@ -75,7 +75,7 @@ function Login() {
       if (result.statusCode === 200) {
         const userData = await getCookie();
         setUser(userData);
-      
+
         navigate('/', { replace: true });
       } else {
         setServerError('Erreur lors de la connexion.');

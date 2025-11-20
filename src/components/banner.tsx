@@ -1,4 +1,4 @@
-//Component 
+//Component
 import NavBarUser from './navBarUser';
 
 //CSS

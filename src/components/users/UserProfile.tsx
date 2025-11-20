@@ -82,56 +82,56 @@ function Library() {
       </div>
     );
   } else {
-      const handleSort = (criteria: 'title' | 'release_date' | 'vote_average') => {
-        setSort(criteria);
-        const orderValue = criteria === 'title' ? 'asc' : 'desc';
-        setOrder(orderValue);
-      };
+    const handleSort = (criteria: 'title' | 'release_date' | 'vote_average') => {
+      setSort(criteria);
+      const orderValue = criteria === 'title' ? 'asc' : 'desc';
+      setOrder(orderValue);
+    };
 
-      return (
-        <div className="library">
-          <Banner />
-          <h2>Movies list of {user?.name}</h2>
-          <div className="library-grid">
-            <div className="library-sort">
-              <FormControl>
-                <FormLabel id="radio-buttons-sort">Sort</FormLabel>
-                <RadioGroup
-                  aria-labelledby="radio-buttons-sort-group-label"
-                  defaultValue="title"
-                  name="radio-caca-group"
-                >
-                  <FormControlLabel
-                    onClick={() => handleSort('title')}
-                    value="title"
-                    control={<Radio />}
-                    label="Title"
-                  />
-                  <FormControlLabel
-                    onClick={() => handleSort('release_date')}
-                    value="release_date"
-                    control={<Radio />}
-                    label="Date"
-                  />
-                  <FormControlLabel
-                    onClick={() => handleSort('vote_average')}
-                    value="vote_average"
-                    control={<Radio />}
-                    label="Rating"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </div>
-            <div className="library-movie">
-              {isLoading
-                ? 'Loading....'
-                : userMovies.map((element, index) => (
-                    <RenderCards key={index} showClassic movie={element} />
-                  ))}
-            </div>
+    return (
+      <div className="library">
+        <Banner />
+        <h2>Movies list of {user?.name}</h2>
+        <div className="library-grid">
+          <div className="library-sort">
+            <FormControl>
+              <FormLabel id="radio-buttons-sort">Sort</FormLabel>
+              <RadioGroup
+                aria-labelledby="radio-buttons-sort-group-label"
+                defaultValue="title"
+                name="radio-caca-group"
+              >
+                <FormControlLabel
+                  onClick={() => handleSort('title')}
+                  value="title"
+                  control={<Radio />}
+                  label="Title"
+                />
+                <FormControlLabel
+                  onClick={() => handleSort('release_date')}
+                  value="release_date"
+                  control={<Radio />}
+                  label="Date"
+                />
+                <FormControlLabel
+                  onClick={() => handleSort('vote_average')}
+                  value="vote_average"
+                  control={<Radio />}
+                  label="Rating"
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
+          <div className="library-movie">
+            {isLoading
+              ? 'Loading....'
+              : userMovies.map((element, index) => (
+                  <RenderCards key={index} showClassic movie={element} />
+                ))}
           </div>
         </div>
-      );
+      </div>
+    );
   }
 }
 
