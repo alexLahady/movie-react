@@ -19,7 +19,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 
 //React
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -30,11 +30,15 @@ function Login() {
   const [serverError, setServerError] = useState<string | null>(null);
 
   //Refresh l'auto-login
-  const { user, setUser } = useAuth();
+  const { user, loading, setUser } = useAuth();
 
-  if (user !== null) {
-    navigate('/', { replace: true });
-  }
+  useEffect(() => {
+    //pour agir bien après le render
+    if (!loading && user !== null) {
+      // Si l'utilisateur est déjà connecté, on le renvoie à Home
+      navigate('/', { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   const {
     register,
