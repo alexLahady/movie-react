@@ -15,7 +15,7 @@ import { PageData } from '../../types';
 
 //utils
 import { formatDate } from '../../utils/formatters';
-import { wait } from '@testing-library/user-event/dist/utils';
+import { wait } from '../../utils/timing';
 
 /***Framework***/
 //Fontawesome

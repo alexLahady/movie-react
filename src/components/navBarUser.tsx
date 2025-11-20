@@ -4,26 +4,26 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 function NavBarUser() {
-  let navUser;
-  const fontAwesome = <FontAwesomeIcon icon={faRightFromBracket} />;
   const { user, loading, logout } = useAuth();
 
   if (loading) {
-    navUser = <li style={{ color: 'white' }}>Loading...</li>;
+    return <li style={{ color: 'white' }}>Loading...</li>;
   } else if (user?.id) {
-    navUser = (
+    return (
       <li style={{ color: 'white' }}>
-        {user.name} <span onClick={logout}>{fontAwesome}</span>
+        {user.name}{' '}
+        <span onClick={logout}>
+          <FontAwesomeIcon icon={faRightFromBracket} />
+        </span>
       </li>
     );
   } else {
-    navUser = (
+    return (
       <li>
         <Link to="/user">Login/Signup</Link>
       </li>
     );
   }
-  return navUser;
 }
 
 export default NavBarUser;
