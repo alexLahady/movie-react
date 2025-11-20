@@ -27,7 +27,6 @@ function RenderCards({
 }: {
   showClassic: boolean;
   movie: Movie;
-  userMovie?: UserMovie[];
 }) {
   if (showClassic) {
     return (

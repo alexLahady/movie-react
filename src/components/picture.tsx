@@ -8,47 +8,37 @@ import { ApiMovies } from '../types/movies';
 import '../styles/picture.scss';
 
 //React
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import useSWR from 'swr';
 import { Link } from 'react-router-dom';
 
-function Picture() {
-  //data pour récupéré les images
-  const [data, setData] = useState<ApiMovies[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+const fetcher = () => allMovies();
 
+function Picture() {
   //slide
   const [startIndex, setStartIndex] = useState(0);
 
-  useEffect(() => {
-    allMovies()
-      .then((movie) => {
-        //console.log(movie); // Log pour vérifier les données reçues
-        setData(movie.slice(0, 6));
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error('Erreur fetch :', err);
-      });
-  }, []);
+  const { data, error, isLoading } = useSWR<ApiMovies[]>('allMovies', fetcher);
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error Data</p>;
+  let movie = data?.slice(0, 6) || [];
 
   const handlePrev = () => {
-    setStartIndex((prev) => (prev - 1 + data.length) % data.length);
+    setStartIndex((prev) => (prev - 1 + movie.length) % movie.length);
   };
 
   const handleNext = () => {
-    setStartIndex((prev) => (prev + 1) % data.length);
+    setStartIndex((prev) => (prev + 1) % movie.length);
   };
 
   const visibleImages =
-    data.length >= 3
+    movie.length >= 3
       ? [
-          data[(startIndex - 1 + data.length) % data.length], // gauche dernière image
-          data[startIndex % data.length], // centre première image
-          data[(startIndex + 1) % data.length], // droite image suivante
+          movie[(startIndex - 1 + movie.length) % movie.length], // gauche dernière image
+          movie[startIndex % movie.length], // centre première image
+          movie[(startIndex + 1) % movie.length], // droite image suivante
         ]
       : [];
-
-  //console.log(visibleImages);
 
   return (
     <div className="picture-img">
@@ -61,7 +51,7 @@ function Picture() {
                 key={`${element.id}-${index}`}
                 to={`/status?title=${element.title}&poster_path=${element.poster_path}&overview=${element.overview}&release_date=${element.release_date}&vote_average=${element.vote_average}`}
               >
-                <img src={element.poster_path} alt={data[index].title} />
+                <img src={element.poster_path} alt={movie[index].title} />
               </Link>
             ))}
           </div>

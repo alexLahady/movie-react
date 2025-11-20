@@ -1,11 +1,13 @@
 import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { CookieUser } from '../../types/auth';
-import { getCookie } from '../../services';
+import { getCookie, logout as logoutService } from '../../services'; //change le nom pour eviter les confusion et bug
+import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
   user: CookieUser | null;
   setUser: React.Dispatch<React.SetStateAction<CookieUser | null>>;
   loading: boolean;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -15,6 +17,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<CookieUser | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -33,7 +36,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     init();
   }, []);
 
-  return <AuthContext.Provider value={{ user, setUser, loading }}>{children}</AuthContext.Provider>;
+  const logout = async () => {
+    try {
+      await logoutService(); // appelle la route logout côté backend
+    } finally {
+      setUser(null); // supprime le user localement
+      navigate('/user')
+    }
+  };
+
+  return <AuthContext.Provider value={{ user, setUser, loading, logout }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

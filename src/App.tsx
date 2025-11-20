@@ -19,7 +19,6 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 //React
 import { Link } from 'react-router-dom';
-//import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 
 const fetcher = () => allMovies();
@@ -64,20 +63,3 @@ function App() {
 
 export default App;
 
-/*
-const [data, setData] = useState<ApiMovies[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    indexService
-      .allMovies()
-      .then((allMovies: ApiMovies[]) => {
-        setData(allMovies.slice(0, 20));//besoin que des 20 premier
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error('Erreur fetch :', err);
-      });
-  }, []);
-
-*/

@@ -15,6 +15,7 @@ import { PageData } from '../../types';
 
 //utils
 import { formatDate } from '../../utils/formatters';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 /***Framework***/
 //Fontawesome
@@ -63,27 +64,19 @@ function Browser() {
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>Error</p>;
 
-  const movies = data.movies;
-  const userMovies = data.userMovies;
+  const { movies, userMovies } = data;
 
   //Pagination
   const indexPage = (page - 1) * 8;
 
-  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms)); //une petite attente après l'ajout d'un favori ou supprimer un favori
-
   if (!isLoading) {
     const favorite = (element: PageData['movies'][0]) => {
-      const foundMovie = userMovies.some((user) => user.title === element.title);
-      if (foundMovie) {
-        return true;
-      }
-      return false;
+      return userMovies.some((user) => user.title === element.title);
     };
 
-    const handlefavorites = async (element: PageData['movies'][0]) => {
-      console.log('je suis dedans');
-      const foundMovie = userMovies.some((user) => user.title === element.title);
-      if (!foundMovie) {
+    const handlefavorites = async (element: PageData['movies'][0], userId: number) => {
+      const isNotFavoriteMovie = !userMovies.some((user) => user.title === element.title);
+      if (isNotFavoriteMovie) {
         const newElement = {
           title: element.title,
           poster_path: element.poster_path,
@@ -92,14 +85,13 @@ function Browser() {
           vote_average: element.vote_average,
         };
 
-        await addingMovie(user!.id, newElement);
+        await addingMovie(userId, newElement);
 
         await wait(200);
         //window.location.reload();
         mutate('pageData'); //refetch le fetcher et met à jour `pageData` qui est en cache après modification
       } else {
-        const deleteElement = { userId: user!.id, title: element.title };
-        //console.log(deleteElement);
+        const deleteElement = { userId: userId, title: element.title };
         await deleteMovieUser(deleteElement);
 
         await wait(200);
@@ -152,7 +144,7 @@ function Browser() {
                   <div></div>
                 ) : (
                   <IconButton
-                    onClick={() => handlefavorites(element)}
+                    onClick={() => handlefavorites(element, user?.id)}
                     aria-label="add to favorites"
                   >
                     {favorite(element) ? (
@@ -183,7 +175,6 @@ function Browser() {
               }}
               page={page}
               onChange={(e, value) => setPage(value)}
-              //onClick={() => handlePage(page)}
               count={13}
               size="large"
             />

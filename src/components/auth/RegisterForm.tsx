@@ -1,8 +1,11 @@
+//auth
+import { useAuth } from './authContext';
+
 //Component
 import Banner from '../banner';
 
 //Services
-import { createUser, login } from '../../services';
+import { createUser, login, getCookie } from '../../services';
 
 //types
 import { DataUser, CreateData } from '../../types/users';
@@ -26,6 +29,8 @@ function Signup() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+
+  const { setUser } = useAuth();
 
   const {
     register,
@@ -62,6 +67,9 @@ function Signup() {
       const resultLogin = await responseLogin.json();
 
       if (resultLogin.statusCode === 200) {
+        const userData = await getCookie();
+        setUser(userData);
+
         navigate('/', { replace: true });
       } else {
         setServerError('Erreur lors de la connexion après l’inscription.');

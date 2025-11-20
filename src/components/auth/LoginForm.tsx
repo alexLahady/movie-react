@@ -30,7 +30,11 @@ function Login() {
   const [serverError, setServerError] = useState<string | null>(null);
 
   //Refresh l'auto-login
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
+
+  if(!user === null){
+    navigate('/', { replace: true });
+  }
 
   const {
     register,
@@ -71,7 +75,7 @@ function Login() {
       if (result.statusCode === 200) {
         const userData = await getCookie();
         setUser(userData);
-
+      
         navigate('/', { replace: true });
       } else {
         setServerError('Erreur lors de la connexion.');
