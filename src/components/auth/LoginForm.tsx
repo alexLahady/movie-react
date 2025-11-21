@@ -33,12 +33,10 @@ function Login() {
   const { user, loading, setUser } = useAuth();
 
   useEffect(() => {
-    //pour agir bien après le render
     if (!loading && user !== null) {
-      // Si l'utilisateur est déjà connecté, on le renvoie à Home
       navigate('/', { replace: true });
     }
-  }, [user, loading, navigate]);
+  }, [loading, user, navigate]);
 
   const {
     register,

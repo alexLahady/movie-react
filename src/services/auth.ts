@@ -1,11 +1,25 @@
 import { apiUrl } from '../types';
 
 // Savoir si l'utilisateur est connecté
-export const getCookie = () => {
-  return fetch(`${apiUrl}/auth/profile`, {
+export const getCookie = async () => {
+  const res = await fetch(`${apiUrl}/auth/profile`, {
     method: 'GET',
     credentials: 'include',
-  }).then((response) => response.json());
+  });
+  //si pas 200 envoyer null
+  if (!res.ok) {
+    return null;
+  }
+
+  const data = await res.json();
+
+  // Vérifie que data contient ce qu’on attend
+  if (!data || !data.id) {
+    return null;
+  }
+
+  return data;// si tout est ok envoyer le bon cookie
+
 };
 
 export const logout = () => {
