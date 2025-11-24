@@ -1,46 +1,42 @@
-# Getting Started with Create React App
+# React Popular Movies
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frontend application built with React to display popular movies and manage a list of favorites via an external backend.
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+1. Clone the project
 
-### `npm start`
+```
+https://github.com/alexLahady/movie-react.git
+cd movie-react
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. Install dependencies
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+npm install
+```
 
-### `npm test`
+3. Configure the environment
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Create a `.env` file:
 
-### `npm run build`
+```
+REACT_APP_BASE_URL_DEV=http://localhost:3001
+REACT_APP_BASE_URL_PROD=https://api.monsite.com
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Run the project
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+npm run dev
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+(or `npm start` depending on your setup)
 
-### `npm run eject`
+## Features
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+* Display popular movies (via backend)
+* User registration / login
+* Add and remove favorites
+* Dedicated page to view user favorites
